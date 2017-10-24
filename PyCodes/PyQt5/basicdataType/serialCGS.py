@@ -47,7 +47,7 @@ class SlaveThread(QObject,Thread):
     def run(self):
         print(QThread.currentThreadId(),' is running ...')
         currentChange = False
-        serial = mywindow.serial
+        serial = mywindow.g_ser
         currentTimeout = self.waitTimeout
 
         print("alive:",self.isAlive(),self.is_alive)
@@ -62,7 +62,7 @@ class SlaveThread(QObject,Thread):
                             if not serial.open(QIODevice.ReadWrite):
                                 self.error.emit("can't not open %s,error code:%d"%(serial.portName(),serial.error()))
                                 return
-                        locker = QMutexLocker(self.mutex) ## when wait for read can't wait for waitWritten  
+                        # locker = QMutexLocker(self.mutex) ## when wait for read can't wait for waitWritten  
                         if serial.waitForReadyRead(10):
                         # if serial.bytesAvailable() > 0:
                             requestData = bytes()
@@ -93,7 +93,7 @@ class SlaveThread(QObject,Thread):
 
 class mywindow(QDialog):
     movetoEnd = pyqtSignal()
-    serial = QSerialPort()
+    g_ser = QSerialPort()
 
     def __init__(self,p = None):
         super(mywindow,self).__init__()
@@ -195,9 +195,12 @@ class mywindow(QDialog):
         self.dlgbtns.setStandardButtons(QDialogButtonBox.Ok|QDialogButtonBox.Cancel|QDialogButtonBox.Abort)
         
         hl = QHBoxLayout()
-        
+        hl.setSpacing(10)
         self.statusLabel = QLabel("status label")
+        self.countLabel = QLabel('统计')
+        self.countLabel.setWordWrap(True)
         hl.addWidget(self.statusLabel,1)
+        hl.addWidget(self.countLabel,1)
         hl.addWidget(self.dlgbtns)
         mainl.addLayout(hl)
 
@@ -223,7 +226,32 @@ class mywindow(QDialog):
         self.movetoEnd.connect(lambda: self.textEdit.moveCursor(QTextCursor.End))
         self.initLog()   
         print(QThread.currentThreadId(),' main is running ...')
-    
+        self._timer = QTimer(self)
+        self._timer.setInterval(10*1000)
+        self._timer.timeout.connect(self.on_autoRecord)
+        self._timer.start()
+        self._autoRecCnt = 0
+        QTimer.singleShot(0,self.on_autoStart)
+
+    def on_autoStart(self):
+        self.startSlave()
+        self.on_autoRecord()
+
+    def on_autoRecord(self):
+        self.on_startRec()
+        info = time.ctime()
+        self._autoRecCnt += 1
+        info = 'auto start record,count:%d %s'%(self._autoRecCnt,time.ctime())
+        self.logger.info(info)
+        QTimer.singleShot(5*1000,self.on_autoStop)
+        self.countLabel.setText(info)
+
+    def on_autoStop(self):
+        self.on_stopRec()
+        info = 'auto stop record,count:%d %s'%(self._autoRecCnt,time.ctime())
+        self.logger.info(info)
+        self.countLabel.setText(info)
+
     def initLog(self):
         filename = os.path.basename(os.path.realpath(sys.argv[0]))
         LOG_FILE = os.path.splitext(filename)[0] + time.strftime('_%Y%m%d') + '.log' 
@@ -246,7 +274,7 @@ class mywindow(QDialog):
         return  cams
 
     def on_serialCmdSend(self,data):
-        if not mywindow.serial.isOpen():
+        if not mywindow.g_ser.isOpen():
             return
 
         if len(data)%4 != 0:
@@ -258,8 +286,8 @@ class mywindow(QDialog):
             msg += struct.pack('>H',len(data) + 4)
             msg += data
             msg += bytearray.fromhex('7e'*4)          
-            nLen = self.serial.write(msg)
-            if self.serial.waitForBytesWritten(25):
+            nLen = self.g_ser.write(msg)
+            if self.g_ser.waitForBytesWritten(25):
                 bData = bytes(msg)
                 hexData = ' '.join('{:02x}'.format(x) for x in bData)
                 self.textEdit.append('sendCMD:' + hexData)
@@ -267,7 +295,7 @@ class mywindow(QDialog):
                 print('cmdsnd:' +  hexData)
                 self.logger.info('cmdsnd:' +hexData)
             else:
-                self.thread.timeout.emit(self.serial.portName() + ":Wait write response timeout %s"%(QTime.currentTime().toString()))
+                self.thread.timeout.emit(self.g_ser.portName() + ":Wait write response timeout %s"%(QTime.currentTime().toString()))
         except:
             print('on_serialCmdSend error ...')
         
@@ -345,10 +373,10 @@ class mywindow(QDialog):
         return data
     
     def startSlave(self):
-        self.serial.setBaudRate(int(self.baudrateCmd.currentText()))
-        self.serial.setPortName(self.serialPortComboBox.currentText())
-        if not self.serial.isOpen():
-            self.serial.open(QIODevice.ReadWrite)
+        self.g_ser.setBaudRate(int(self.baudrateCmd.currentText()))
+        self.g_ser.setPortName(self.serialPortComboBox.currentText())
+        if not self.g_ser.isOpen():
+            self.g_ser.open(QIODevice.ReadWrite)
         self.btnStop.setEnabled(True)
         self.thread.bwait = False
         self.runButton.setEnabled(False)
@@ -361,30 +389,30 @@ class mywindow(QDialog):
         self.btnExec.setEnabled(True)
         self.runButton.setEnabled(True) 
         self.btnStop.setEnabled(False)
-        mywindow.serial.close()
+        self._timer.stop()
+        mywindow.g_ser.close()
 
     def showSysStatus(self,rawdata):
         # rawdata = bytearray()
-        diskremain = []
         fmt = 'h'*10 + '4s4si'
         data = struct.unpack(fmt,rawdata)
         print(data)
         self.logger.info('cmdupk:' + str(data))
+        self.textEdit.append('cmdupk:' + str(data))
 
     def showRequest(self,s):
-        self.transactionCount += 1
-        self.textEdit.append("transaction #%d:"
-                            "-response: %s" %(self.transactionCount,s))
-        # self.logger.info('cmdrcv:' + s)
+        # self.transactionCount += 1
+        # self.textEdit.append("transaction #%d:-response: %s"%(self.transactionCount,s))
+        
+        self.logger.info('cmdrcv:' + s)
+        
         # self.textEdit.moveCursor(QTextCursor.End)
-        # self.movetoEnd.emit()
-        # s = str()
         m = re.search(r'e7 e7 e7 e7 00 2a 30 3b 32 30 32 33 3b 30 3b (.*?) 3b 7e 7e 7e 7e', s)
         if m:
-            # print(m.group(1))
+            print(s)
+            # self.logger.info('cmdrcv:' + str(m.groups(1)))
+            self.textEdit.append('cmdrcv:' + str(m.groups(1)))
             self.showSysStatus(bytearray.fromhex(m.group(1)))
-            # print(m.group(0))
-            self.logger.info('cmdrcv:' + m.group(0))
 
     def processError(self,s):
         self.activateRunButton()
