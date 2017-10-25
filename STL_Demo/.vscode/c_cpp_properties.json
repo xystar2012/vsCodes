@@ -46,6 +46,7 @@
             "name": "Win32",
             "includePath": [
                 "c:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/include",
+                "D:/POCOpro/include",
                 "D:/MinGW/include",
                 "D:/MinGW/include/c++/6.1.0",
                 "D:/MinGW/include/c++/6.1.0/backward",
@@ -59,6 +60,8 @@
             "browse": {
                 "path": [
                     "c:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/include",
+                    "D:/Program Files (x86)/Python/Python35-32/include",
+                    "D:/POCOpro/include",
                     "D:/MinGW/include",
                     "D:/MinGW/include/c++/6.1.0",
                     "D:/MinGW/include/c++/6.1.0/backward",
