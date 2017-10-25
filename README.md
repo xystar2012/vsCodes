@@ -1,2 +1,2 @@
 # vsCodes
-python and cpp codes dayly fresh
+python and cpp codes daily update!!
