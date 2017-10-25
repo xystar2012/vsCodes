@@ -1,3 +1,31 @@
+from queue import Queue
+from itertools import groupby
+import random
+
+print('-*-'*20 + 'group by ----')
+def compress(l):
+    return [a for a,b in groupby(l)]
+
+def pack(l):
+    return [list(b) for a,b in groupby(l)]
+x = [random.randint(0,5) for x in range(20)]
+print(x)
+arr = [(a,list(b)) for a,b in groupby(x)]
+print('compress:',compress(arr))
+print('pack:',pack(x))
+
+arr = [a for a,b in groupby(sorted(x))]
+print(arr)
+arr = [list(b) for a,b in groupby(sorted(x))]
+print(arr)
+dic = dict([(a,len(list(b))) for a,b in groupby(sorted(x))])
+print(dic)
+arr = [a for a,b in groupby(x) if len(list(b)) > 1]
+print(arr)
+print('-*-'*20 + 'group by end ---')
+
+q = Queue()
+
 l1 = [2,3,4]
 l2 = [4,5,6]
 
@@ -20,13 +48,13 @@ print(s1[0:5:2])  # 从下标0到下标4 (下标5不包括在内)，每隔2取�
 print(s1[-1])             # 序列最后一个元素
 print(s1[-3])             # 序列倒数第三个元素
 
-for a in range(10):
-    print (a**2)
+# for a in range(10):
+#     print (a**2)
 
-for i in range(10):
-    if i % 2: 
-        continue
-    print (i)
+# for i in range(10):
+#     if i % 2: 
+#         continue
+#     print (i)
 
 i = 0
 while i < 8:
@@ -51,6 +79,5 @@ def change_list(b):
 print (change_list(b))
 print (b)
 
-
-print (dir(list))
-print (help(list))
+# print (dir(list))
+# print (help(list))
