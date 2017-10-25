@@ -147,7 +147,8 @@ class Demo3(QDialog):
         self._picIndex = 0
         self._movie.frameChanged.connect(self.on_frameChange)
         # self._movie.finished.connect(lambda:self.btnNext.clicked.emit())
-    
+
+
     def on_frameChange(self,n):
         self._labPlay.setText(' {} 帧'.format(n))
         if n + 1 == self._movie.frameCount():
@@ -200,6 +201,14 @@ class Demo3(QDialog):
         if self._picIndex < 0:
             self._picIndex = 0
         self.flashMovie(self._picIndex)
+    
+class Demo4(QDialog):
+    
+    def __init__(self,parent = None):
+        QDialog.__init__(self,parent)
+        self.resize(400,600)
+        # self.notexist()
+        aa = 2/0
 
 class myWidget(QWidget):
     def __init__(self,parent=None):
@@ -255,29 +264,20 @@ class mainWindow(QMainWindow):
         print(module)
         try:
             c = getattr(module,class_name)  
+            print(c,type(c))
+            dlg = c(self)
+            if hasattr(c,'exec_'):
+                dlg.resize(400,400)
+                dlg.exec_()
+            else:
+                dlg.show()
+
         except AttributeError as e:
             print(str(e),end=' --> ')
             print('Click %s error here!!'%text)
-            return
-        
-        print(c,type(c))
-        dlg = c(self)
-
-        if hasattr(c,'exec_'):
-            dlg.resize(400,400)
-            dlg.exec_()
-        else:
-            dlg.show()    
-
-        # if index == 1:
-        #     dlg = Demo1(self)
-        #     dlg.exec_()
-        # elif index == 2:
-        #     dlg = Demo2(self)
-        #     dlg.show()
-        # elif index == 3:
-        #     dlg = Demo3(self)
-        #     dlg.exec_()
+        except:
+            err = sys.exc_info()
+            print('Else error:',type(err),err)
 
     def closeEvent(self,evt):
         print('main close here!')
