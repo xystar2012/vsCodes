@@ -83,5 +83,6 @@
         "xutility": "cpp",
         "regex": "cpp",
         "xcomplex": "cpp"
-    }
+    },
+    "python.linting.pylintEnabled": false
 }

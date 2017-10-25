@@ -7,20 +7,17 @@
                 {
                     "taskName": "debug",
                     "command": "cmd",
-                    "args": [ "/c","build.bat","${fileBasenameNoExtension}"
+                    "args": [ "/c","build.bat","${fileDirname}","${fileBasenameNoExtension}"
                         
                     ],
                     "isShellCommand": true,
                     "showOutput": "always",
                     "isBuildCommand": true
-                },
-                {
-                    
-                    "taskName": "build",
-                    "isBuildCommand": true,
-                    "isShellCommand": true,
-                    "args": [ "-c","make Makefile"],
-                    "showOutput": "always"
                 }
             ]
+    // "windows":{
+    //         "command": "build.bat",
+    //         "isShellCommand": true,
+    //         "showOutput": "always"
+    //         }
 }
