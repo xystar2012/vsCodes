@@ -116,6 +116,7 @@ class mywindow(QDialog):
         # self.serialPortComboBox.setCurrentIndex(0)
         self.serialPortComboBox.setCurrentIndex(self.serialPortComboBox.count() -1)
         self.btnExec = QPushButton('执行')
+        self.btnAuto = QPushButton('循环测试')
         self.btnStop = QPushButton('停止')
         # hl.addLayout(fmL)
         hl.setSpacing(10)
@@ -124,6 +125,7 @@ class mywindow(QDialog):
         hl.addLayout(fmL2)
         hl.addWidget(self.serialPortComboBox)
         hl.addWidget(self.btnExec)
+        hl.addWidget(self.btnAuto)
         hl.addWidget(self.btnStop)
         mainl.addLayout(hl)
 
@@ -217,6 +219,7 @@ class mywindow(QDialog):
         self.thread.error.connect(self.processError)
         self.thread.timeout.connect(self.processTimeout)
         self.btnStop.clicked.connect(self.on_stopRecv)
+        self.btnAuto.clicked.connect(self.on_autoStart)
         self.movetoEnd.connect(lambda: self.textEdit.moveCursor(QTextCursor.End))
         self.initLog()   
         print(QThread.currentThreadId(),' main is running ...')
@@ -225,11 +228,13 @@ class mywindow(QDialog):
         self._timer.timeout.connect(self.on_autoRecord)
         self._autoRecCnt = 0
         self._timer.start()
-        QTimer.singleShot(0,self.on_autoStart)
+        # QTimer.singleShot(0,self.on_autoStart)
 
     def on_autoStart(self):
         self.startSlave()
         self.on_autoRecord()
+        self._timer.start()
+        self.btnAuto.setEnabled(False)
 
     def on_autoRecord(self):
         self.on_startRec()
@@ -384,7 +389,8 @@ class mywindow(QDialog):
     def on_stopRecv(self):
         self.thread.bwait = True
         self.btnExec.setEnabled(True)
-        self.runButton.setEnabled(True) 
+        self.runButton.setEnabled(True)
+        self.btnAuto.setEnabled(True) 
         self.btnStop.setEnabled(False)
         self._timer.stop()
         mywindow.g_ser.close()
