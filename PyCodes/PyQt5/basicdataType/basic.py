@@ -24,6 +24,38 @@ arr = [a for a,b in groupby(x) if len(list(b)) > 1]
 print(arr)
 print('-*-'*20 + 'group by end ---')
 
+print('-*-'*20 + 'enclose ----')
+
+#一个函数和它的环境变量合在一起，就构成了一个闭包(closure)。
+# 在Python中，所谓的闭包是一个包含有环境变量取值的函数对象。
+# 环境变量取值被保存在函数对象的__closure__属性中。比如下面的代码：
+def line_conf():
+    b = 15
+    def line(x):
+        return 2*x+b
+    return line       # return a function object
+
+b = 5
+my_line = line_conf()
+print(my_line(5))  
+print(my_line.__closure__)
+print(my_line.__closure__[0].cell_contents)
+
+
+## senior
+
+def line_conf(a, b):
+    def line(x):
+        return a*x + b
+    return line
+
+line1 = line_conf(1, 1)
+line2 = line_conf(4, 5)
+print(line1(5), line2(5))
+
+print('-*-'*20 + 'enclose end ---')
+
+
 q = Queue()
 
 l1 = [2,3,4]

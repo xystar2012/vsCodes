@@ -8,6 +8,12 @@
 
 git@10.10.10.211:codes.git
 git@github.com:xystar2012/vsCodes.git
+https://github.com/xystar2012/vsCodes.git
+
+https://git.coding.net/xystar2012/vsCodes.git
+git@git.coding.net:xystar2012/vsCodes.git
+https://gitee.com/xystar2012/vsCodes.git
+git@gitee.com:xystar2012/vsCodes.git
 
 =======================git
 
