@@ -1,0 +1,143 @@
+简单来说，unicode，gbk和大五码就是编码的值，而utf-8,uft-16之类就是这个值的表现形式．而前面那三种编码是一兼容的，同一个汉字，那三个码值是完全不一样的．如＂汉＂的uncode值与gbk就是不一样的，假设uncode为a040，gbk为b030，而uft-8码，就是把那个值表现的形式．utf-8码完全只针对uncode来组织的，如果GBK要转UTF－8必须先转uncode码，再转utf-8就OK了．
+
+协调世界时（英：Coordinated Universal Time ，法：Temps Universel Coordonné），又称世界统一时间，世界标准时间，国际协调时间。
+
+
+总结：【只有在MySQL中可以使用“utf-8”的别名“utf8”，但是在其他地方一律使用大写“UTF-8”。】
+具体为：
+  在命令“mysql_query(set names utf8)”外一律用大写“UTF-8”。
+  
+
+//  mysql 1130  10061   my.cnf
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123123' WITH GRANT OPTION;  
+select * from douban_movie ORDER BY CONVERT(SUBSTR(`no` FROM 4),SIGNED)  
+  
+  
+// bit
+cd  E:/bitelf/test/
+conn mb mdm
+dow eaglelite.elf 
+run
+
+E:/BIT/tupleserial
+E:/bitelf/chenggsSeri/201701
+dow eaglepro_C4140CDG.elf
+
+
+1、图像缩放后 窗口显示偏移修复
+2、图像放大后，拖动滑动条时 只取显示部分缩放显示，加快渲染速度
+3、图像缩放 右键四个菜单功能：1:1显示、放大、缩小、恢复正常
+4、设备列表浮窗显示不正常；
+5、动态上下左右图像翻转功能移植到Linux版本；
+
+
+=============================================	python package
+
+pip install PyQt5 --no-cache-dir
+pip install pyqt5==5.6
+python -m pip install -U pip
+https://pypi.python.org/pypi/PyQt5/5.9
+
+import sip
+print(sip, sip.SIP_VERSION_STR)
+
+import PyQt5.QtWidgets as w
+w.QApplication([]).aboutQt()
+
+ppyinstaller -F   -w serialinout.py   --distpath F:\Local_SvnDir\bin
+pyinstaller 打包：
+pyinstaller --path F:\Local_SvnDir\pythons\env35\Lib\site-packages\PyQt5\Qt\bin  qtMain.py  -F
+QT_QPA_PLATFORM_PLUGIN_PATH
+QT_PLUGIN_PATH
+
+
+// windows 代码页只识别 带bom 的utf-8 编码，可以Linux下正常识别
+
+大端模式
+所谓的大端模式（Big-endian），是指数据的高字节，保存在内存的低地址中，而数据的低字节，保存在内存的高地址中，这样的存储模式有点儿类似于把数据当作字符串顺序处理：地址由小向大增加，而数据从高位往低位放；
+例子：
+0000430: e684 6c4e 0100 1800 53ef 0100 0100 0000
+0000440: b484 6c4e 004e ed00 0000 0000 0100 0000
+在大端模式下，前32位应该这样读: e6 84 6c 4e ( 假设int占4个字节)
+记忆方法: 地址的增长顺序与值的增长顺序相反
+高位在前
+
+小端模式
+所谓的小端模式（Little-endian），是指数据的高字节保存在内存的高地址中，而数据的低字节保存在内存的低地址中，这种存储模式将地址的高低和数据位权有效地结合起来，高地址部分权值高，低地址部分权值低，和我们的逻辑方法一致。
+例子：
+0000430: e684 6c4e 0100 1800 53ef 0100 0100 0000
+0000440: b484 6c4e 004e ed00 0000 0000 0100 0000
+在小端模式下，前32位应该这样读: 4e 6c 84 e6( 假设int占4个字节)
+记忆方法: 地址的增长顺序与值的增长顺序相同
+低位在前
+
+2、简单大小端转换的宏
+#definesw16(x)\
+　((short)(\
+　(((short)(x)&(short)0x00ffU)<<8)|\
+　(((short)(x)&(short)0xff00U)>>8)))
+
+// wxWidget png to char*
+for f in `find icons -name "*.png"`;do  ./png2c.py  $f >> pngRc.h;echo “./png2c.py”  $f  OK;sleep 0.2;done
+while read line;do echo $line;done < pngRc.h 
+
+// wxWidgets 字符串操作
+wxConvLibc.FromWChar(char*, 128,wchar_t *);
+wxString  wxstr = wxString( strstring.c_str(), wxConvUTF8);
+std::string str = string(wxstr.mb_str());
+*String in UTF-8 encoding using wxString::utf8_str().
+*Narrow char* string in UTF-8 encoding using wxString::FromUTF8().
+
+// 控制台 转 UI
+在需要启动的项目右键 -> 属性 -> 高级 -> 入口点 输入 mainCRTStartup
+// 大小设置
+resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);
+
+// 以下类
+QSignalTransition QPropertyAnimation QStateMachine QState
+static_cast<void(QSignalMapper::*)(const QString &)>(&QSignalMapper::mapped)
+// 委托类
+ItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,const QModelIndex &index) const
+QWidget *ItemDelegate::createEditor(QWidget *parent,
+        const QStyleOptionViewItem &option,
+        const QModelIndex &index) const
+void ItemDelegate::setEditorData(QWidget *editor,
+        const QModelIndex &index) const
+void ItemDelegate::setModelData(QWidget *editor,
+        QAbstractItemModel *model, const QModelIndex &index) const
+		
+
+// Linux Socket
+#include <sys/socket.h>  
+#include <netinet/in.h>  
+#include <arpa/inet.h>
+#include <unistd.h>
+
+       
+	   
+Variable substitution
+VS Code supports variable substitution inside strings in launch.json and has the following predefined variables:
+
+${workspaceRoot} - the path of the folder opened in VS Code
+${workspaceRootFolderName} - the name of the folder opened in VS Code without any slashes (/)
+${file} - the current opened file
+${relativeFile} - the current opened file relative to workspaceRoot
+${fileBasename} - the current opened file's basename
+${fileBasenameNoExtension} - the current opened file's basename with no file extension
+${fileDirname} - the current opened file's dirname
+${fileExtname} - the current opened file's extension
+${cwd} - the task runner's current working directory on startup
+${lineNumber} - the current selected line number in the active file
+
+
+// ubuntu 硬盘
+gedit  /boot/grub/grub.cfg   143
+menuentry "install  ubuntu 14.04" {
+  search --set -f /ubuntukylin-14.04.5-desktop-amd64.iso
+  loopback loop /ubuntukylin-14.04.5-desktop-amd64.iso
+  set root=(loop)
+  linux /casper/vmlinuz.efi boot=casper iso-scan/filename=/ubuntukylin-14.04.5-desktop-amd64.iso
+  initrd /casper/initrd.lz
+  boot
+}
+ 

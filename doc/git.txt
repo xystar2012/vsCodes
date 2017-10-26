@@ -1,0 +1,26 @@
+作者：nfer
+链接：https://www.zhihu.com/question/29894004/answer/46237730
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+"后来我从github上找了一个开源项目" 重点在这一行。举个栗子：你在大家上随便找了个人，看人家的衣服很漂亮。你按照别人的衣服样式，自己复制了一份(clone)，别人既然穿出来了，就不怕他人抄。过了一段时间，人家觉得有些地方不够美观，进行了一些改动，然后再次穿到自己身上秀出来了(push)。这个时候你仍然可以将新改动的部分再次抄过来(fetch)，然后合并到你的衣服上(merge)。这两步可以合并为一步，即pull。后来，你觉得衣服的有些部分不够美观，如你想把长袖改成短袖。没问题，你自己改，改完后穿上(commit)也觉得很美，你想“既然这么美，要不把改动也告诉给别人吧”，然后你duang就想上前拉住别人，“来来来，看看我的改动好不好”。别人肯定会想“你谁啊？有病吧？”问题出现了，如果你本身是一个很牛X的服装设计师，看到有些人的衣服设计的实在是太烂，完全看不下去了，你下定决心，“我要更漂亮、更实用、更节能”。那么怎么办？第一步：要先知会(fork)一下对方，“我要针对你的设计进行调整了”第二步：你仍然需要先复制(clone)一份，你肯定不能直接在别人身上改动吧第三步：修改完成后，需要自己先上身(commit)看看效果第四步：如果对于改动满意，那么好，这个时候就可以告知(push)对方，"我刚才说要对你的设计进行修整，现在是修整后的效果，你看看，满意否？"当然，这个时候，对方是不是接受，那就看人家具体的意愿啦。=====================================================================所以，我的理解是，如果你想push，请先fork；如果只是拿来主义，那么直接clone然后pull就可以了。这个设计理念应该是包含了人与人直接最基本的一个尊重。
+
+
+git@10.10.10.211:codes.git
+git@github.com:xystar2012/vsCodes.git
+
+=======================git
+
+git pull --rebase origin master
+git push origin 本地分支:远程分支
+sudo /etc/init.d/ssh restart  
+git clean  -d  -fx ""
+
+    -x means ignored files are also removed as well as files unknown to git.
+    -d means remove untracked directories in addition to untracked files.
+    -f is required to force it to run.
+
+git clean -dfxn or git clean -dfx --dry-run
+
+## 多仓库 共享
+git pull origin master ----allow-unrelated-histories

@@ -1,0 +1,634 @@
+
+// python3.5
+sudo add-apt-repository ppa:fkrull/deadsnakes
+sudo apt-get update
+sudo apt-get install python3.5
+apt-get install python3.5-dev
+
+// 升级 pip 更新包
+py -3 -m pip install --upgrade pip
+
+virtualenv --python="D:\Program Files (x86)\Python\Python35-32\python.exe" --always-copy env35 
+virtualenv --python="D:\Program Files (x86)\Python\Python27\Python.exe" --always-copy env27 
+
+ubuntu Qt chooser:
+/usr/lib/x86_64-linux-gnu/qtchooser
+/usr/lib/x86_64-linux-gnu/qt-default/qtchooser
+/usr/share/qtchooser
+
+
+// 挂载
+mount -t cifs   //192.168.1.121/vmDisk   /mnt/vmdisk   -o username="xystar",password="123123"
+
+// x11vnc 真实远程
+/usr/bin/x11vnc -display :0 -auth /var/run/lightdm/root/:0 -forever -bg -o /var/log/x11vnc.log -rfbauth /etc/x11vnc.pass -rfbport 5900
+apt-get install autocutsel
+
+xrandr --newmode "1366x768" 106.50 1440 1528 1672 1904 900 903 909 934 -hsync +vsync
+xrandr --addmode VGA1 1366x768
+xrandr --output VGA1 --mode 1366x768
+
+// 恢复桌面
+/usr/share/lightdm/lightdm.conf.d   ==》 greeter-show-manual-login=true
+pkill  gnome-session
+service lightdm start
+service lightdm stop
+service lightdm restart
+sudo apt-get install --reinstall ubuntu-desktop
+sudo apt-get install unity
+// 默认桌面
+/usr/share/lightdm/lightdm.conf.d/50-ubuntu.conf
+/usr/share/xsessions
+
+// Qt  centos 编译环境搭建
+yum install libX*    -y
+yum install mesa-libGL-devel mesa-libGLU-devel  -y
+
+./configure -confirm-license -opensource  -prefix /opt/qt5.6.2_static -release -platform linux-g++-64  -static  -qt-xcb -no-icu  -qt-freetype   -nomake examples  -nomake tests -qt-sql-sqlite -qt-zlib -qt-libpng -qt-libjpeg  -no-qml-debug 
+
+// 设置 QT环境变量
+// #vi /root/.bash_profile //打开root用户.bash_profile文件
+在root用户.bash_profile文件中设置环境变量，在此文件里面添加如下内容：
+ 
+QTDIR=/opt/qt5.6.2_static
+PATH=$QTDIR/bin:$PATH
+MANPATH=$QTDIR/doc/man:$MANPATH
+LD_LIBRARY_PATH=$QTDIR/lib:$LD_LIBRARY_PATH
+export QTDIR PATH MANPATH LD_LIBRARY_PATH
+ 
+// centos gcc  升级
+wget http://people.centos.org/tru/devtools-2/devtools-2.repo
+mv devtools-2.repo /etc/yum.repos.d
+yum install devtoolset-2-gcc devtoolset-2-binutils devtoolset-2-gcc-c++
+
+ 
+// Ubuntu QT 编译环境搭建：
+apt-get install build-essential libpcap0.8-dev libx11-dev libfreetype6-dev libavahi-gobject-dev libsm-dev libxrender-dev libfontconfig-dev libxext-dev
+
+// qt 程序編譯
+apt-get install libxcb-dev libx11-dev libavahi-gobject-dev
+// demo for async
+g++ asynctest.cpp -o asynctest -Wl,--no-as-needed   -std=c++11 -lpthread 
+
+// qt Linux Media
+sudo add-apt-repository ppa:mc3man/trusty-media
+add-apt-repository ppa:mc3man/gstffmpeg-keep
+apt-get update
+sudo apt-get update
+sudo apt-get install gstreamer0.10-ffmpeg
+// centos avi
+yum install gstreamer1-libav.x86_64  
+
+
+//	Ubuntu GL 环境
+下面安装两个增强库：
+这个库是对OpenGL的增强
+这个库是对OpenGL窗口的增强和上面那个增强库的增强
+apt-get install libgl1-mesa-dev
+apt-get install libglu1-mesa-dev
+
+
+
+// wxwidgets 编译环境  GL 支持
+apt-get install freeglut3-dev libglew1.5-dev 
+./configure --disable-shared --enable-unicode  --prefix=/opt/wxWidgets_3.0.2  CFLAGS="-fPIC" CXXFLAGS="-fPIC" --with-opengl
+
+ // readME
+ The installation of wxWidgets is finished.  On certain
+ platforms (e.g. Linux) you'll now have to run ldconfig
+ if you installed a shared library and also modify the
+ LD_LIBRARY_PATH (or equivalent) environment variable.
+ wxWidgets comes with no guarantees and doesn't claim
+ to be suitable for any purpose.
+ Read the wxWindows Licence on licencing conditions.
+ 
+
+// 无法安装 gtk2.0  http://blog.csdn.net/mmg_sysu/article/details/50529267
+// wxWidgets 程序编译 
+wx-config --cppflags
+-I/opt/wxWidgets_3.0.2/lib/wx/include/gtk2-unicode-static-3.0 -I/opt/wxWidgets_3.0.2/include/wx-3.0 -D_FILE_OFFSET_BITS=64 -D__WXGTK__ -pthread -DNDEBUG
+
+wx-config --libs
+-L/opt/wxWidgets_3.0.2/lib -pthread   /opt/wxWidgets_3.0.2/lib/libwx_gtk2u_xrc-3.0.a /opt/wxWidgets_3.0.2/lib/libwx_gtk2u_qa-3.0.a /opt/wxWidgets_3.0.2/lib/libwx_baseu_net-3.0.a /opt/wxWidgets_3.0.2/lib/libwx_gtk2u_html-3.0.a /opt/wxWidgets_3.0.2/lib/libwx_gtk2u_adv-3.0.a /opt/wxWidgets_3.0.2/lib/libwx_gtk2u_core-3.0.a /opt/wxWidgets_3.0.2/lib/libwx_baseu_xml-3.0.a /opt/wxWidgets_3.0.2/lib/libwx_baseu-3.0.a -pthread -lgthread-2.0 -lX11 -lXxf86vm -lSM -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgio-2.0 -lpangoft2-1.0 -lpangocairo-1.0 -lgdk_pixbuf-2.0 -lcairo -lpango-1.0 -lfontconfig -lgobject-2.0 -lglib-2.0 -lfreetype -lpng -lexpat -lwxregexu-3.0 -lwxtiff-3.0 -lwxjpeg-3.0 -lz -ldl -lm  
+ 
+//glToos  安装 
+apt-cache search glew
+sudo apt-get install libglew-dbg libglew-dev libglew1.10 libglewmx-dbg libglewmx-dev libglewmx1.10 glew-utils
+glut GLU
+
+// boost
+apt-get install mpi-default-dev　　#安装mpi库
+apt-get install libicu-dev　　　　　#支持正则表达式的UNICODE字符集　
+apt-get install python-dev　　　　　#需要python的话
+apt-get install libbz2-dev　　　　　#如果编译出现错误：bzlib.h: No such file or directory
+
+using mpi ;　　#如果需要MPI功能，需要在 /tools/build/v2/user-config.jam 文件的末尾添加
+./bootstrap.sh --prefix=/opt/boost_1.55  
+./b2 -sHAVE_ICU=1 --build-dir=./tmpbuild --build-type=minimal --prefix=/opt/boost_1.55
+
+
+// 1404 远程
+apt-get install gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
+
+gnome-panel &
+gnome-settings-daemon &
+metacity &
+nautilus &
+gnome-terminal &
+
+
+// vim 设置
+set number
+set autoindent
+set tabstop=2
+set smartindent
+set shiftwidth=4
+"Paste toggle - when pasting something in, don't indent.
+set pastetoggle=<F3>
+ 
+// vim
+set number
+set autoindent
+set tabstop=2
+set smartindent
+set shiftwidth=4
+"Paste toggle - when pasting something in, don't indent.
+
+// shell ++
+a=1
+a=$(($a+1))
+a=$[$a+1]
+a=`expr $a + 1`
+let a++
+let a+=1
+((a++))
+  
+
+// Glibc 升级
+wget http://ftp.gnu.org/gnu/glibc/glibc-2.14.tar.gz 
+tar -xvf  glibc-2.14.tar.gz  
+cd glibc-build-2.14  
+mkdir build
+cd build
+make && make install
+cp libc.so /lib64/libc-2.14.so  
+rm -f /lib64/libc.so.6  
+LD_PRELOAD=/lib64/libc-2.14.so ln -s /lib64/libc-2.14.so  /lib64/libc.so.6  
+
+// /usr/lib/libstdc++.so.6: version `GLIBCXX_3.4.15' not found错误的解决
+strings /usr/lib64/libstdc++.so.6 | grep GLIBCXX
+rm libstdc++.so.6
+ln -s libstdc++.so.6.0.19 libstdc++.so.6
+ 
+ 
+ 
+// ========================================================================
++ cd qtbase
++ /home/xystar/qt-everywhere-opensource-src-5.6.2/qtbase/configure -top-level --help
+Usage:  configure [options]
+
+Installation options:
+
+ These are optional, but you may specify install directories.
+
+    -prefix <dir> ...... The deployment directory, as seen on the target device.
+                         (default /usr/local/Qt-5.6.2, $PWD if -developer-build is active)
+
+    -extprefix <dir> ... The installation directory, as seen on the host machine.
+                         (default SYSROOT/PREFIX)
+
+    -hostprefix [dir] .. The installation directory for build tools running on the
+                         host machine. If [dir] is not given, the current build
+                         directory will be used. (default EXTPREFIX)
+
+ You may use these to change the layout of the install. Note that all directories
+ except -sysconfdir should be located under -prefix/-hostprefix:
+
+    -bindir <dir> ......... User executables will be installed to <dir>
+                            (default PREFIX/bin)
+    -headerdir <dir> ...... Headers will be installed to <dir>
+                            (default PREFIX/include)
+    -libdir <dir> ......... Libraries will be installed to <dir>
+                            (default PREFIX/lib)
+    -archdatadir <dir> .... Arch-dependent data used by Qt will be installed to <dir>
+                            (default PREFIX)
+    -plugindir <dir> ...... Plugins will be installed to <dir>
+                            (default ARCHDATADIR/plugins)
+    -libexecdir <dir> ..... Program executables will be installed to <dir>
+                            (default ARCHDATADIR/libexec, ARCHDATADIR/bin for MinGW)
+    -importdir <dir> ...... Imports for QML1 will be installed to <dir>
+                            (default ARCHDATADIR/imports)
+    -qmldir <dir> ......... Imports for QML2 will be installed to <dir>
+                            (default ARCHDATADIR/qml)
+    -datadir <dir> ........ Arch-independent data used by Qt will be installed to <dir>
+                            (default PREFIX)
+    -docdir <dir> ......... Documentation will be installed to <dir>
+                            (default DATADIR/doc)
+    -translationdir <dir> . Translations of Qt programs will be installed to <dir>
+                            (default DATADIR/translations)
+    -sysconfdir <dir> ..... Settings used by Qt programs will be looked for in <dir>
+                            (default PREFIX/etc/xdg)
+    -examplesdir <dir> .... Examples will be installed to <dir>
+                            (default PREFIX/examples)
+    -testsdir <dir> ....... Tests will be installed to <dir>
+                            (default PREFIX/tests)
+
+    -hostbindir <dir> .. Host executables will be installed to <dir>
+                         (default HOSTPREFIX/bin)
+    -hostlibdir <dir> .. Host libraries will be installed to <dir>
+                         (default HOSTPREFIX/lib)
+    -hostdatadir <dir> . Data used by qmake will be installed to <dir>
+                         (default HOSTPREFIX)
+
+Configure options:
+
+ The defaults (*) are usually acceptable. A plus (+) denotes a default value
+ that needs to be evaluated. If the evaluation succeeds, the feature is
+ included. Here is a short explanation of each option:
+
+ *  -release ........... Compile and link Qt with debugging turned off.
+    -debug ............. Compile and link Qt with debugging turned on.
+    -debug-and-release . Compile and link two versions of Qt, with and without
+                         debugging turned on (Mac only).
+
+    -force-debug-info .. Create symbol files for release builds.
+
+    -developer-build ... Compile and link Qt with Qt developer options (including auto-tests exporting)
+
+ *  -no-optimized-tools ... Do not build optimized host tools even in debug build.
+    -optimized-tools ...... Build optimized host tools even in debug build.
+
+    -opensource ........ Compile and link the Open-Source Edition of Qt.
+    -commercial ........ Compile and link the Commercial Edition of Qt.
+
+    -confirm-license ... Automatically acknowledge the license (use with
+                         either -opensource or -commercial)
+
+    -c++std <edition> .. Compile Qt with C++ standard edition (c++98, c++11, c++14, c++1z)
+                         Default: highest supported
+
+ *  -shared ............ Create and use shared Qt libraries.
+    -static ............ Create and use static Qt libraries.
+
+    -no-largefile ...... Disables large file support.
+ +  -largefile ......... Enables Qt to access files larger than 4 GB.
+
+    -no-accessibility .. Do not compile Accessibility support.
+                         Disabling accessibility is not recommended, as it will break QStyle
+                         and may break other internal parts of Qt.
+                         With this switch you create a source incompatible version of Qt,
+                         which is unsupported.
+ +  -accessibility ..... Compile Accessibility support.
+
+    -no-sql-<driver> ... Disable SQL <driver> entirely.
+    -qt-sql-<driver> ... Enable a SQL <driver> in the Qt SQL module, by default
+                         none are turned on.
+    -plugin-sql-<driver> Enable SQL <driver> as a plugin to be linked to
+                         at run time.
+
+                         Possible values for <driver>:
+                         [ db2 ibase mysql oci odbc psql sqlite sqlite2 tds ]
+
+    -system-sqlite ..... Use sqlite from the operating system.
+
+    -no-qml-debug ...... Do not build the in-process QML debugging support.
+ +  -qml-debug ......... Build the QML debugging support.
+
+    -platform target ... The operating system and compiler you are building
+                         on (default detected from host system).
+
+                         See the README file for a list of supported
+                         operating systems and compilers.
+
+    -no-sse2 ........... Do not compile with use of SSE2 instructions.
+    -no-sse3 ........... Do not compile with use of SSE3 instructions.
+    -no-ssse3 .......... Do not compile with use of SSSE3 instructions.
+    -no-sse4.1 ......... Do not compile with use of SSE4.1 instructions.
+    -no-sse4.2 ......... Do not compile with use of SSE4.2 instructions.
+    -no-avx ............ Do not compile with use of AVX instructions.
+    -no-avx2 ........... Do not compile with use of AVX2 instructions.
+    -no-mips_dsp ....... Do not compile with use of MIPS DSP instructions.
+    -no-mips_dspr2 ..... Do not compile with use of MIPS DSP rev2 instructions.
+
+    -qtnamespace <name>  Wraps all Qt library code in 'namespace <name> {...}'.
+    -qtlibinfix <infix>  Renames all libQt*.so to libQt*<infix>.so.
+
+    -testcocoon ........ Instrument Qt with the TestCocoon code coverage tool.
+    -gcov .............. Instrument Qt with the GCov code coverage tool.
+
+    -D <string> ........ Add an explicit define to the preprocessor.
+    -I <string> ........ Add an explicit include path.
+    -L <string> ........ Add an explicit library path.
+
+ +  -pkg-config ........ Use pkg-config to detect include and library paths. By default,
+                         configure determines whether to use pkg-config or not with
+                         some heuristics such as checking the environment variables.
+    -no-pkg-config ..... Disable use of pkg-config.
+    -force-pkg-config .. Force usage of pkg-config (skips pkg-config usability
+                         detection heuristic).
+
+    -help, -h .......... Display this information.
+
+Third Party Libraries:
+
+    -qt-zlib ............ Use the zlib bundled with Qt.
+ +  -system-zlib ........ Use zlib from the operating system.
+                          See http://www.gzip.org/zlib
+
+    -no-mtdev ........... Do not compile mtdev support.
+ +  -mtdev .............. Enable mtdev support.
+
+ +  -no-journald ........ Do not send logging output to journald.
+    -journald ........... Send logging output to journald.
+
+ +  -no-syslog .......... Do not send logging output to syslog.
+    -syslog ............. Send logging output to syslog.
+
+    -no-gif ............. Do not compile GIF reading support.
+
+    -no-libpng .......... Do not compile PNG support.
+    -qt-libpng .......... Use the libpng bundled with Qt.
+ +  -system-libpng ...... Use libpng from the operating system.
+                          See http://www.libpng.org/pub/png
+
+    -no-libjpeg ......... Do not compile JPEG support.
+    -qt-libjpeg ......... Use the libjpeg bundled with Qt.
+ +  -system-libjpeg ..... Use libjpeg from the operating system.
+                          See http://www.ijg.org
+
+    -no-freetype ........ Do not compile in Freetype2 support.
+    -qt-freetype ........ Use the libfreetype bundled with Qt.
+ +  -system-freetype..... Use the libfreetype provided by the system (enabled if -fontconfig is active).
+                          See http://www.freetype.org
+
+    -no-harfbuzz ........ Do not compile HarfBuzz-NG support.
+ *  -qt-harfbuzz ........ Use HarfBuzz-NG bundled with Qt to do text shaping.
+                          It can still be disabled by setting
+                          the QT_HARFBUZZ environment variable to "old".
+    -system-harfbuzz .... Use HarfBuzz-NG from the operating system
+                          to do text shaping. It can still be disabled
+                          by setting the QT_HARFBUZZ environment variable to "old".
+                          See http://www.harfbuzz.org
+
+    -no-openssl ......... Do not compile support for OpenSSL.
+ +  -openssl ............ Enable run-time OpenSSL support.
+    -openssl-linked ..... Enabled linked OpenSSL support.
+
+    -no-libproxy ....... Do not compile support for libproxy
+ +  -libproxy .......... Use libproxy from the operating system.
+
+    -qt-pcre ............ Use the PCRE library bundled with Qt.
+ +  -system-pcre ........ Use the PCRE library from the operating system.
+
+    -qt-xcb ............. Use xcb- libraries bundled with Qt.
+                          (libxcb.so will still be used from operating system).
+ +  -system-xcb ......... Use xcb- libraries from the operating system.
+
+    -xkb-config-root .... Set default XKB config root. This option is used only together with -qt-xkbcommon-x11.
+    -qt-xkbcommon-x11 ... Use the xkbcommon library bundled with Qt in combination with xcb.
+ +  -system-xkbcommon-x11 Use the xkbcommon library from the operating system in combination with xcb.
+
+    -no-xkbcommon-evdev . Do not use X-less xkbcommon when compiling libinput support.
+ *  -xkbcommon-evdev .... Use X-less xkbcommon when compiling libinput support.
+
+    -no-xinput2 ......... Do not compile XInput2 support.
+ *  -xinput2 ............ Compile XInput2 support.
+
+    -no-xcb-xlib......... Do not compile Xcb-Xlib support.
+ *  -xcb-xlib............ Compile Xcb-Xlib support.
+
+    -no-glib ............ Do not compile Glib support.
+ +  -glib ............... Compile Glib support.
+
+    -no-pulseaudio ...... Do not compile PulseAudio support.
+ +  -pulseaudio ......... Compile PulseAudio support.
+
+    -no-alsa ............ Do not compile ALSA support.
+ +  -alsa ............... Compile ALSA support.
+
+    -no-gtkstyle ........ Do not compile GTK theme support.
+ +  -gtkstyle ........... Compile GTK theme support.
+
+Additional options:
+
+    -make <part> ....... Add part to the list of parts to be built at make time.
+                         (defaults to: libs tools examples)
+    -nomake <part> ..... Exclude part from the list of parts to be built.
+
+    -skip <module> ..... Exclude an entire module from the build.
+
+    -no-compile-examples ... Install only the sources of examples.
+
+    -no-gui ............ Don't build the Qt GUI module and dependencies.
+ +  -gui ............... Build the Qt GUI module and dependencies.
+
+    -no-widgets ........ Don't build the Qt Widgets module and dependencies.
+ +  -widgets ........... Build the Qt Widgets module and dependencies.
+
+    -R <string> ........ Add an explicit runtime library path to the Qt
+                         libraries.
+    -l <string> ........ Add an explicit library.
+
+    -no-rpath .......... Do not use the library install path as a runtime
+                         library path. On Apple platforms, this implies using
+                         absolute install names (based in -libdir) for dynamic
+                         libraries and frameworks.
+ +  -rpath ............. Link Qt libraries and executables using the library
+                         install path as a runtime library path. Equivalent
+                         to -R install_libpath
+
+    -continue .......... Continue as far as possible if an error occurs.
+
+    -verbose, -v ....... Print verbose information about each step of the
+                         configure process.
+
+    -silent ............ Reduce the build output so that warnings and errors
+                         can be seen more easily.
+
+    -no-cups ........... Do not compile CUPS support.
+ *  -cups .............. Compile CUPS support.
+                         Requires cups/cups.h and libcups.so.2.
+
+    -no-iconv .......... Do not compile support for iconv(3).
+ *  -iconv ............. Compile support for iconv(3).
+
+    -no-evdev .......... Do not compile support for evdev.
+ *  -evdev ............. Compile support for evdev.
+
+    -no-tslib .......... Do not compile support for tslib.
+ *  -tslib ............. Compile support for tslib.
+
+    -no-icu ............ Do not compile support for ICU libraries.
+ +  -icu ............... Compile support for ICU libraries.
+
+    -no-fontconfig ..... Do not compile FontConfig support.
+ +  -fontconfig ........ Compile FontConfig support.
+
+    -no-strip .......... Do not strip binaries and libraries of unneeded symbols.
+ *  -strip ............. Strip binaries and libraries of unneeded symbols when installing.
+
+ *  -no-pch ............ Do not use precompiled header support.
+    -pch ............... Use precompiled header support.
+
+ *  -no-ltcg             Do not use Link Time Code Generation
+    -ltcg                Use Link Time Code Generation.
+
+    -no-dbus ........... Do not compile the Qt D-Bus module.
+ +  -dbus-linked ....... Compile the Qt D-Bus module and link to libdbus-1.
+    -dbus-runtime ...... Compile the Qt D-Bus module and dynamically load libdbus-1.
+
+    -reduce-relocations ..... Reduce relocations in the libraries through extra
+                              linker optimizations (Qt/X11 and Qt for Embedded Linux only;
+                              experimental; needs GNU ld >= 2.18).
+
+    -no-use-gold-linker ..... Do not link using the GNU gold linker.
+ +  -use-gold-linker ........ Link using the GNU gold linker if available.
+
+    -force-asserts ........ Force Q_ASSERT to be enabled even in release builds.
+
+    -sanitize [address|thread|memory|undefined] Enables the specified compiler sanitizer.
+
+    -device <name> ............... Cross-compile for device <name> (experimental)
+    -device-option <key=value> ... Add device specific options for the device mkspec
+                                   (experimental)
+
+ *  -no-separate-debug-info . Do not store debug information in a separate file.
+    -separate-debug-info .... Strip debug information into a separate file.
+
+    -no-xcb ............ Do not compile Xcb (X protocol C-language Binding) support.
+ *  -xcb ............... Compile Xcb support.
+
+    -no-eglfs .......... Do not compile EGLFS (EGL Full Screen/Single Surface) support.
+ *  -eglfs ............. Compile EGLFS support.
+
+    -no-kms ............ Do not compile backends for KMS.
+ *  -kms ............... Compile backends for KMS.
+
+    -no-gbm ............ Do not compile backends for GBM.
+ *  -gbm ............... Compile backends for GBM.
+
+ *  -no-directfb ....... Do not compile DirectFB support.
+    -directfb .......... Compile DirectFB support.
+
+    -no-linuxfb ........ Do not compile Linux Framebuffer support.
+ *  -linuxfb ........... Compile Linux Framebuffer support.
+
+ *  -no-mirclient....... Do not compile Mir client support.
+    -mirclient.......... Compile Mir client support.
+
+    -qpa <name> ......... Sets the default QPA platform (e.g xcb, cocoa, windows).
+
+    -xplatform target ... The target platform when cross-compiling.
+
+    -sysroot <dir> ...... Sets <dir> as the target compiler's and qmake's sysroot and also sets pkg-config paths.
+    -no-gcc-sysroot ..... When using -sysroot, it disables the passing of --sysroot to the compiler
+
+    -no-feature-<feature> Do not compile in <feature>.
+    -feature-<feature> .. Compile in <feature>. The available features
+                          are described in src/corelib/global/qfeatures.txt
+
+    -qconfig local ...... Use src/corelib/global/qconfig-local.h rather than the
+                          default (full).
+
+    -qreal [double|float] typedef qreal to the specified type. The default is double.
+                          Note that changing this flag affects binary compatibility.
+
+    -no-opengl .......... Do not support OpenGL.
+    -opengl <api> ....... Enable OpenGL support
+                          With no parameter, this will attempt to auto-detect
+                          OpenGL ES 2.0 and higher, or regular desktop OpenGL.
+                          Use es2 for <api> to override auto-detection.
+
+    -no-libinput ........ Do not support libinput.
+ *  -libinput ........... Enable libinput support.
+
+    -no-gstreamer ....... Do not support GStreamer.
+ +  -gstreamer <version>  Enable GStreamer support
+                          With no parameter, this will attempt to auto-detect GStreamer 0.10 and
+                          1.0. GStreamer 1.0 is used by default when available.
+                          Use 0.10 or 1.0 for <version> to override auto-detection.
+
+ *  -no-system-proxies .. Do not use system network proxies by default.
+    -system-proxies ..... Use system network proxies by default.
+
+    -no-warnings-are-errors Make warnings be treated normally
+    -warnings-are-errors  Make warnings be treated as errors
+                          (enabled if -developer-build is active)
+
+QNX/Blackberry options:
+
+    -no-slog2 .......... Do not compile with slog2 support.
+    -slog2 ............. Compile with slog2 support.
+
+    -no-pps ............ Do not compile with pps support.
+    -pps ............... Compile with pps support.
+
+    -no-imf ............ Do not compile with imf support.
+    -imf ............... Compile with imf support.
+
+    -no-lgmon .......... Do not compile with lgmon support.
+    -lgmon ............. Compile with lgmon support.
+
+MacOS/iOS options:
+
+    -Fstring ........... Add an explicit framework path.
+    -fw string ......... Add an explicit framework.
+
+ *  -framework ......... Build Qt as a series of frameworks and
+                         link tools against those frameworks.
+    -no-framework ...... Do not build Qt as a series of frameworks.
+
+ *  -securetransport ... Use SecureTransport instead of OpenSSL
+
+    -no-securetransport  Do not use SecureTransport, either use OpenSSL or do not use any SSL backend
+                         at all (if combined with -no-openssl).
+
+    -sdk <sdk> ......... Build Qt using Apple provided SDK <sdk>. The argument should be
+                         one of the available SDKs as listed by 'xcodebuild -showsdks'.
+                         Note that the argument applies only to Qt libraries and applications built
+                         using the target mkspec - not host tools such as qmake, moc, rcc, etc.
+
+Android options:
+
+    -android-sdk path .............. The Android SDK root path.
+                                     (default $ANDROID_SDK_ROOT)
+
+    -android-ndk path .............. The Android NDK root path.
+                                     (default $ANDROID_NDK_ROOT)
+
+    -android-ndk-platform .......... Sets the android platform
+                                     (default android-9)
+
+    -android-ndk-host .............. Sets the android NDK host (linux-x86, linux-x86_64, etc.)
+                                     (default $ANDROID_NDK_HOST)
+
+    -android-arch .................. Sets the android architecture (armeabi, armeabi-v7a, x86, mips,
+                                     arm64-v8a, x86_64, mips64)
+                                     (default armeabi-v7a)
+
+    -android-toolchain-version ..... Sets the android toolchain version
+                                     (default 4.9)
+
+    -no-android-style-assets ....... Do not compile in the code which automatically extracts
+                                     style assets from the run-time device. Setting this will
+                                     make the Android style behave incorrectly, but will enable
+                                     compatibility with the LGPL2.1 license.
+ *  -android-style-assets .......... Compile the code which automatically extracts style assets
+                                     from the run-time device. This option will make the
+                                     Android platform plugin incompatible with the LGPL2.1.
+
+									 
+									 
+
+======================================================================									 
+WARNING: Using static linking will disable the use of dynamically
+loaded plugins. Make sure to import all needed static plugins,
+or compile needed modules into the library.
+Info: creating super cache file /home/xystar/qt-everywhere-opensource-src-5.6.2/.qmake.super
+
+Qt is now configured for building. Just run 'gmake'.
+Once everything is built, you must run 'gmake install'.
+Qt will be installed into /usr/local/Qt-5.6.2
+
+Prior to reconfiguration, make sure you remove any leftovers from
+the previous build.
