@@ -10,7 +10,6 @@ set libs="ws2_32.lib"
 set obj=bin/%fileBasename%.exe
 REM /NODEFAULTLIB:library
 set linkerflags=/OUT:%obj% /MACHINE:X86 /LIBPATH:%libPath% /DYNAMICBASE %libs%
-=======
 set incPaths=/I"./" /I"D:\local\boost_1_64_0" /I"D:\POCOpro\include"  /I"D:\Program Files (x86)\Python\Python27\include"
 REM MD MT 多线程 动态 静态C运行库
 set compilerflags=/Od /Zi /EHsc  %incPaths% /D "WIN32"  /MDd

@@ -9,8 +9,10 @@ config=configparser.ConfigParser()
 config.read("ipConfig.ini")
 
 try:
-    #添加节School
-    config.add_section("School")
+    if 'School' not in config.sections():
+        #添加节School
+        config.add_section("School")
+   
     #添加新的IP地址参数
     config.set("School","IP","192.168.1.120")
     config.set("School","Mask","255.255.255.0")

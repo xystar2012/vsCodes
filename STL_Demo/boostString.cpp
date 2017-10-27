@@ -189,18 +189,19 @@ static void boostFs()
     namespace fs = boost::filesystem;
 	boost::timer t;
 
-	cout << "max timespan: " << t.elapsed_max() / 3600 << "h" << endl;
+    cout << "max timespan: " << t.elapsed_max() / 3600 << "h" << endl;
 	cout << "min timespan: " << t.elapsed_min() << "s" << endl;
 	cout << "now time elapsed: " << t.elapsed() << "s" << endl;
 	
- 	boost::filesystem::path p("c:/xystar/pics");
- 	for (boost::filesystem::directory_iterator item_begin(p); item_begin != boost::filesystem::directory_iterator(); item_begin++)
+    boost::filesystem::path p("c:/Users/xystar/pics",fs::native);
+ 	for (fs::directory_iterator item_begin(p); item_begin != fs::directory_iterator(); item_begin++)
  	{
- 		if (boost::filesystem::is_regular_file(*item_begin))
+ 		if (fs::is_regular_file(*item_begin))
  		{
  			std::wstring name = item_begin->path().filename().wstring();
  			std::wcout << name << std::endl;
- 		}
+         }
+          std::cout << (std::distance(item_begin,fs::directory_iterator())) << std::endl;
  	}
 }
 
@@ -209,7 +210,7 @@ int main(void)
     //fileCheck();
     //splitString();
     //testSTDSet();
-    // boostFs();
+    boostFs();
     boostSplitJoin();
     boostArry();
     test_string_tokenizer();
