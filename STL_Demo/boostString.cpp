@@ -96,7 +96,7 @@ static void test_string_tokenizer()
         std::cout << std::endl;  
         // [!!][Hello][world][foo][bar][yow][baz]  
   
-        char_separator<char> sep2("-;", "|", keep_empty_tokens);  
+        char_separator<char> sep2("-;", "|");  // , keep_empty_tokens  
         tokenizer<char_separator<char> > tok2(str, sep2);  
          for (auto pos : tok2)  
             std::cout << "[" << pos << "]";  
@@ -107,7 +107,7 @@ static void test_string_tokenizer()
     // 4. escaped_list_separator  
     {  
         std::string str = "Field 1,\"putting quotes around fields, allows commas\",Field 3";  
-  
+        // 下面三个字符做为分隔符: '\', ',', '"'
         tokenizer<escaped_list_separator<char> > tok(str);  
         for (auto pos : tok)  
             std::cout << "[" << pos << "]";  
@@ -121,7 +121,7 @@ static void test_string_tokenizer()
         std::string str = "12252001400";  
   
         int offsets[] = {2, 2, 4};  
-        offset_separator f(offsets, offsets + 3);  
+        offset_separator f(offsets, offsets + 3,false,false);  
         tokenizer<offset_separator> tok(str, f);  
   
          for (auto pos : tok)    
@@ -209,7 +209,7 @@ int main(void)
     //fileCheck();
     //splitString();
     //testSTDSet();
-    boostFs();
+    // boostFs();
     boostSplitJoin();
     boostArry();
     test_string_tokenizer();
