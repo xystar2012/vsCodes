@@ -19,8 +19,6 @@ import logging
 import logging.handlers
 import logging.config  
 
-
-
 class SlaveThread(QObject,Thread):
     request = pyqtSignal(str)
     error = pyqtSignal(str)
@@ -148,8 +146,6 @@ class mywindow(QDialog):
         group1 = QGroupBox('任务')
 
         vl = QVBoxLayout(group1)
-
-        
         hl = QHBoxLayout()
         self.boxs = []
         for i in range(1,5):
@@ -406,9 +402,7 @@ class mywindow(QDialog):
     def showRequest(self,s):
         # self.transactionCount += 1
         # self.textEdit.append("transaction #%d:-response: %s"%(self.transactionCount,s))
-        
         self.logger.info('cmdrcv:' + s)
-        
         # self.textEdit.moveCursor(QTextCursor.End)
         m = re.search(r'e7 e7 e7 e7 00 2a 30 3b 32 30 32 33 3b 30 3b (.*?) 3b 7e 7e 7e 7e', s)
         if m:

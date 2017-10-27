@@ -28,6 +28,12 @@ def curPath():
     for file in os.listdir(path):
         print(os.path.join(path,file))
 
+def curPath():
+    fullPath = os.path.realpath(sys.argv[0])
+    print(sys.argv[0],fullPath)
+    filename = os.path.basename(fullPath)
+    nameNoExt = os.path.splitext(filename)
+    print(filename,nameNoExt)
 
 if __name__=="__main__":
     curPath()

@@ -2,6 +2,8 @@ from queue import Queue
 from itertools import groupby
 import random
 
+
+
 print('-*-'*20 + 'group by ----')
 def compress(l):
     return [a for a,b in groupby(l)]
