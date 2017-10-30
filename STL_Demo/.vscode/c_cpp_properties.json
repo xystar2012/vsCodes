@@ -46,6 +46,8 @@
             "name": "Win32",
             "includePath": [
                 "c:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/include",
+                "D:/local/boost_1_64_0/include",
+                "D:/Program Files (x86)/Python/Python27/include",
                 "D:/POCOpro/include",
                 "D:/MinGW/include",
                 "D:/MinGW/include/c++/6.1.0",
@@ -60,7 +62,9 @@
             "browse": {
                 "path": [
                     "c:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/include",
+                    "D:/Program Files (x86)/Python/Python27/include",
                     "D:/Program Files (x86)/Python/Python35-32/include",
+                    "D:/local/boost_1_64_0/include",
                     "D:/POCOpro/include",
                     "D:/MinGW/include",
                     "D:/MinGW/include/c++/6.1.0",

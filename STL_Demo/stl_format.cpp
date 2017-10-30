@@ -27,6 +27,7 @@ static void setWidth()
 
 static void setJustify()
 {
+    cout << "new modify" << endl;
     cout.setf(ios_base::left,ios_base::adjustfield);
     cout.setf(ios_base::showpos);
     cout.setf(ios_base::showpoint);

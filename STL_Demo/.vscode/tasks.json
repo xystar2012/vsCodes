@@ -1,3 +1,20 @@
+// {
+//     "version": "2.0.0",
+//     "tasks": [
+//         {
+//             "taskName": "debug",
+//             "type": "shell",
+//             "command": "cmd /c build.bat ${fileDirname} ${fileBasenameNoExtension}",
+//             "presentation": {
+//                 "reveal": "always"
+//             },
+//             "group": "build",
+//             "problemMatcher": []
+//         }
+//     ]
+// }
+
+
 {
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
@@ -15,9 +32,16 @@
                     "isBuildCommand": true
                 }
             ]
-    // "windows":{
-    //         "command": "build.bat",
-    //         "isShellCommand": true,
-    //         "showOutput": "always"
-    //         }
 }
+
+
+
+// isShellCommand: Use the "type": "shell" property instead.
+// isBuildCommand: Use the "group": "build" property instead.
+// isTestCommand: Use the "group": "test" property instead.
+// echoCommand: Use the "presentation" : { "echo": "..." } property instead.
+// showOutput: Use the "presentation" : { "reveal": "..." } property instead.
+// suppressTaskName: By default, the task name gets appended to the list of arguments 
+// when running a task version 0.1.0. Since version 2.0.0 supports commands per task, 
+// simply inline the command into the task and specify the arguments accordingly.
+

@@ -130,6 +130,85 @@ ${cwd} - the task runner's current working directory on startup
 ${lineNumber} - the current selected line number in the active file
 
 
+Tasks in multi Folder Workspaces
+
+If you have setup a workspace that consist out of multiple folders then only version 2.0.0 tasks are detected and shown in the Tasks > Run Task picker. See the section below on how to convert 0.1.0 tasks into 2.0.0 tasks to get access to all tasks.
+Convert from "0.1.0" to "2.0.0"
+
+Since the 2.0.0 version comes with lots of new auto-detection features, you can try removing an existing tasks.json file to see which tasks still work. Simply rename the existing tasks.json to tasks.json.off. If you have lots of customizations then you can switch by changing the version attribute to "2.0.0". After doing so, you might encounter warnings because some old properties are now deprecated. Here is how to get rid of the deprecations:
+
+    isShellCommand: Use the "type": "shell" property instead.
+    isBuildCommand: Use the "group": "build" property instead.
+    isTestCommand: Use the "group": "test" property instead.
+    echoCommand: Use the "presentation" : { "echo": "..." } property instead.
+    showOutput: Use the "presentation" : { "reveal": "..." } property instead.
+    suppressTaskName: By default, the task name gets appended to the list of arguments when running a task version 0.1.0. Since version 2.0.0 supports commands per task, simply inline the command into the task and specify the arguments accordingly.
+
+Consider the following 0.1.0 configuration:
+
+{
+    "version": "0.1.0",
+    "isShellCommand": true,
+    "command": "script",
+    "tasks": [
+        {
+            "taskName": "Run tests",
+            "suppressTaskName": true,
+            "args": [
+                "test"
+            ]
+        }
+    ]
+}
+
+The corresponding 2.0.0 configuration would look like this:
+
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "taskName": "Run tests",
+            "type": "shell",
+            "command": "script test"
+        }
+    ]
+}
+
+    taskSelector: Move the command into the task and specify the task selector inside the command.
+
+{
+    "version": "0.1.0",
+    "command": "msbuild",
+    "args": [
+        "/property:GenerateFullPaths=true"
+    ],
+    "taskSelector": "/t:",
+    "tasks": [
+        {
+            "taskName": "build"
+        }
+    ]
+}
+
+A corresponding 2.0.0 configuration would look like this:
+
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "taskName": "build",
+            "command": "msbuild",
+            "args": [
+                "/property:GenerateFullPaths=true",
+                "/t:build"
+            ]
+        }
+    ]
+}
+
+If you want to use a 0.1.0 version of the tasks.json file with the new terminal runner, you can add the runner property to the tasks.json file: "runner": "terminal".
+
+
 // ubuntu с╡ел
 gedit  /boot/grub/grub.cfg   143
 menuentry "install  ubuntu 14.04" {

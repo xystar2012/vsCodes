@@ -1,7 +1,7 @@
 @echo off
 call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" x86   
 set incPaths=/I"D:\local\boost_1_64_0"  
-REM MD MT å¤šçº¿ç¨‹ åŠ¨æ€ é™æ€Cè¿è¡Œåº“
+REM MD MT ¶àÏß³Ì ¶¯Ì¬ ¾²Ì¬CÔËĞĞ¿â
 set compilerflags=/Od /Zi /EHsc  %incPaths% /D "WIN32"  /MD
 set fileBasename=%1%
 if not exist bin;md bin
@@ -11,10 +11,10 @@ set obj=bin/%fileBasename%.exe
 REM /NODEFAULTLIB:library
 set linkerflags=/OUT:%obj% /MACHINE:X86 /LIBPATH:%libPath% /DYNAMICBASE %libs%
 set incPaths=/I"./" /I"D:\local\boost_1_64_0" /I"D:\POCOpro\include"  /I"D:\Program Files (x86)\Python\Python27\include"
-REM MD MT å¤šçº¿ç¨‹ åŠ¨æ€ é™æ€Cè¿è¡Œåº“
+REM MD MT ¶àÏß³Ì ¶¯Ì¬ ¾²Ì¬CÔËĞĞ¿â
 set compilerflags=/Od /Zi /EHsc  %incPaths% /D "WIN32"  /MDd
 REM set compilerflags=/O2 /Zi /EHsc  %incPaths% /D "WIN32"  /MD
-REM è¾“å‡ºæ— æ¢è¡Œ
+REM Êä³öÎŞ»»ĞĞ
 set /p="path:%1% " < nul  
 echo filename:%2%
 cd /d %1%
