@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>UDPSendByQtClass</class>
+ <widget class="QMainWindow" name="UDPSendByQtClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>634</width>
+    <height>497</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>UDPSendByQt</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="2" column="4">
+     <widget class="QComboBox" name="comboBox">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <item>
+       <property name="text">
+        <string>Debug</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Warn</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Fatal</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Info</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="7">
+     <widget class="QGroupBox" name="groupBox">
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+  QGroupBox {
+      background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                        stop: 0 #E0E0E0, stop: 1 #FFFFFF);
+      border: 2px solid gray;
+      border-radius: 5px;
+      margin-top: 1ex; /* leave space at the top for the title */
+  }
+
+  QGroupBox::title {
+      subcontrol-origin: margin;
+      subcontrol-position: top center; /* position at the top center */
+      padding: 0 3px;
+      background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                        stop: 0 darkBlue, stop: 1 #FFFFFF);
+  }</string>
+      </property>
+      <property name="title">
+       <string>SendAddr</string>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+      <layout class="QHBoxLayout" name="hlay_group">
+       <item>
+        <layout class="QHBoxLayout" name="hlay_mutil">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Multi：</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="addr_Muti">
+           <property name="text">
+            <string>234.5.6.7:2600</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hlay_single">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Single：</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="Addr_Single">
+           <property name="text">
+            <string>192.168.1.220:2200</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="hlay_gps">
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>GPs：</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="Addr_Gps">
+           <property name="text">
+            <string>192.168.1.220:3006</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="5">
+     <widget class="QPushButton" name="btn_start">
+      <property name="text">
+       <string>开始</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="7">
+     <widget class="QTextEdit" name="textEdit"/>
+    </item>
+    <item row="2" column="0">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>389</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="2" column="6">
+     <widget class="QPushButton" name="btn_stop">
+      <property name="text">
+       <string>结束</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0" colspan="5">
+     <widget class="QLabel" name="scrollCaptionLabel">
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 75 12pt &quot;Consolas&quot;;
+text-decoration: underline;
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2" colspan="2">
+     <widget class="QComboBox" name="cmb_data">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>75</width>
+        <height>0</height>
+       </size>
+      </property>
+      <item>
+       <property name="text">
+        <string>顺序递增</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>随机值</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QCheckBox" name="checkBox_log">
+      <property name="text">
+       <string>记日志</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>634</width>
+     <height>23</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="udpsendbyqt.qrc"/>
+ </resources>
+ <connections/>
+</ui>

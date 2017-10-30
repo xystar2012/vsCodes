@@ -4,6 +4,9 @@ from PyQt5.QtCore import *
 
 os.chdir(sys.path[0])
 
+## python 内置 ini config， 增加 default 节，逗号 字段不解析位 List
+# Qt ini config 增加 General 节点，逗号字段解析为 List
+
 config=configparser.ConfigParser()
 #IpConfig.ini可以是一个不存在的文件，意味着准备新建配置文件。
 config.read("ipConfig.ini")
@@ -25,6 +28,7 @@ except configparser.DuplicateSectionError:
 try:
     if 'Match' not in config.sections():
         config.add_section("Match")
+
     config.set("Match","IP","172.17.29.120")
     config.set("Match","Mask","255.255.255.0")
     config.set("Match","Gateway","172.17.29.1")
@@ -36,7 +40,6 @@ except configparser.DuplicateSectionError:
 saveName = "IpConfigSave.ini"
 config.write(open(saveName, "w"))
 
-
 ip=config.get("School","IP")
 mask=config.get("School","mask")
 gateway=config.get("School","Gateway")
@@ -44,17 +47,20 @@ dns=config.get("School","DNS")
 l = config.get("Match","List")
 print((ip,mask + '\n' + gateway,dns),'==',type(l),l)
 
-# myFile = open(saveName)
-# for eachLine in myFile:
-    # print(eachLine)
 
 config = QSettings(saveName,QSettings.IniFormat)
 config.beginGroup('Match')
 rt = config.value('List')
 print(type(rt),rt)
-# config.setValue('List',['aa','bb','cc'])
+config.setValue('List',['aa','bb','cc'])
 # config.setValue('List','a,b,c,d,e,f') # to string
-# rt = config.value('List')
-# print(type(rt),rt)
+rt = config.value('List')
+print(type(rt),rt)
 config.endGroup()
 config.sync()
+del config
+
+with open(saveName)  as myFile:
+    for eachLine in myFile:
+        print(eachLine)
+
