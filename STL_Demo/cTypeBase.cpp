@@ -2,6 +2,14 @@
 #include <locale>
 #include <sstream>
 #include <codecvt>
+#include <time.h>
+#include <sys/timeb.h>
+#include <thread>
+#include <chrono>
+#include <iomanip>
+
+
+using std::chrono::milliseconds;
 
 
 struct csv_whitespace : std::ctype<wchar_t>
@@ -83,8 +91,61 @@ static void newLoacal()
               << std::has_facet<myfacet>(loc) << '\n';
 }
 
+
+// struct   timeb{
+//     time_t   time;                      /* 为1970-01-01至今的秒数*/
+//     unsigned   short   millitm;   /* 千分之一秒即毫秒 */
+//     short   timezonel;               /* 为目前时区和Greenwich相差的时间，单位为分钟 */
+//     short   dstflag;                   /* 为日光节约时间的修正状态，如果为非0代表启用日光节约时间修正 */
+// };
+
+static void millSec()
+{
+    struct timeb tb;
+    int nLoop = 0;
+
+    do
+    {
+        ftime(&tb);
+        printf("UTC:   %s", asctime(gmtime(&tb.time)));
+        printf("local: %s", asctime(localtime(&tb.time)));
+        printf(".%03d\n",tb.millitm);
+        std::this_thread::sleep_for(milliseconds(1000*1 + nLoop*10));
+    }while(++nLoop < 10);
+}
+
+
+
+void static clockTest()
+{
+    std::function<void ()> f = []()
+    {
+        volatile double d = 0;
+        for(int n=0; n<10000; ++n)
+           for(int m=0; m<10000; ++m)
+               d += d*n*m;
+    };
+
+    std::clock_t c_start = std::clock();
+    auto t_start = std::chrono::high_resolution_clock::now();
+    std::thread t1(f);
+    std::thread t2(f); // f() is called on two threads
+    t1.join();
+    t2.join();
+    std::clock_t c_end = std::clock();
+    auto t_end = std::chrono::high_resolution_clock::now();
+ 
+    std::cout << std::fixed << std::setprecision(2) << "CPU time used: "
+              << 1000.0 * (c_end-c_start) / CLOCKS_PER_SEC << " ms\n"
+              << "Wall clock time passed: "
+              << std::chrono::duration<double, std::milli>(t_end-t_start).count()
+              << " ms\n";
+}
+
 int main()
 {
+    clockTest();
+    // millSec();
     newLoacal();
     newSplit();
     localConstruct();
