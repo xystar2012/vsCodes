@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from serialportedittext  import SerialPortInput
 
 class Ui_SerialPortWindow(object):
     def setupUi(self, SerialPortWindow):
@@ -171,6 +172,7 @@ class Ui_SerialPortWindow(object):
         self.pushButtonClearSendArea.setFlat(True)
         self.pushButtonClearSendArea.setObjectName("pushButtonClearSendArea")
         self.textEditSent = QtWidgets.QTextEdit(self.centralwidget)
+        # self.textEditSent = SerialPortInput(self.centralwidget)
         self.textEditSent.setGeometry(QtCore.QRect(260, 330, 481, 221))
         font = QtGui.QFont()
         font.setPointSize(14)

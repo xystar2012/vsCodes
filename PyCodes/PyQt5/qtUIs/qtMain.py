@@ -1,8 +1,8 @@
 from PyQt5 import QtGui,QtCore,QtWidgets
 from PyQt5.QtCore import QObject, pyqtSignal,QTimer,QThread,Qt,QEvent
-from PyQt5.QtGui import QImage,QPainter,QFont,QIcon,QPalette,QImage,QPixmap,QPalette,QMovie
-from PyQt5.QtWidgets import QDialog,QWidget,QMainWindow,qApp,QFrame,QLabel,QPushButton,QSpinBox
-from PyQt5.QtWidgets import QHBoxLayout,QVBoxLayout,QFormLayout
+from PyQt5.QtGui import QImage,QPainter,QFont,QIcon,QPalette,QImage,QPixmap,QPalette,QMovie,qGray
+from PyQt5.QtWidgets import QDialog,QWidget,QMainWindow,qApp,QFrame,QLabel,QPushButton,QSpinBox,QListWidget
+from PyQt5.QtWidgets import QHBoxLayout,QVBoxLayout,QFormLayout,QStackedLayout,QGridLayout
 # from PyQt5.QtCore import qApp
 import os,os.path,sys,math
 import operator,copy
@@ -95,11 +95,11 @@ class Demo3(QDialog):
         
         frmLay = QFormLayout()
         self._spinBox = QSpinBox()
-        frmLay.addRow('跳转:',self._spinBox)
+        frmLay.addRow('è·³è½¬:',self._spinBox)
         btnGo = QPushButton('Go',self)      
     
-        btnPrev = QPushButton('上一张',self)
-        self.btnNext = QPushButton('下一张',self)
+        btnPrev = QPushButton('ä¸Šä¸€å¼ ',self)
+        self.btnNext = QPushButton('ä¸‹ä¸€å¼ ',self)
         btnPrev.clicked.connect(self.on_prev)
         self.btnNext.clicked.connect(self.on_next)
         btnGo.clicked.connect(lambda: self.flashMovie(self._spinBox.value()))
@@ -116,20 +116,20 @@ class Demo3(QDialog):
         labLay.setSpacing(10)
         self._label = QLabel()
         frm1 = QFormLayout()
-        frm1.addRow('共:',self._label)
+        frm1.addRow('å…±:',self._label)
         frm1.setRowWrapPolicy(QFormLayout.WrapLongRows)
         labLay.addStretch()
         labLay.addLayout(frm1)
         frm1 = QFormLayout()
         self._labInfo = QLabel()
         # self._labInfo.setWordWrap(True)
-        frm1.addRow('当前:',self._labInfo)
+        frm1.addRow('å½“å‰�:',self._labInfo)
         # frm1.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
         frm1.setRowWrapPolicy(QFormLayout.WrapLongRows)
         labLay.addLayout(frm1)
         frm1 = QFormLayout()
         self._labPlay = QLabel()
-        frm1.addRow('播放帧号:',self._labPlay)
+        frm1.addRow('æ’­æ”¾å¸§å�·:',self._labPlay)
         labLay.addLayout(frm1)
         frm1.setRowWrapPolicy(QFormLayout.WrapLongRows)
 
@@ -150,7 +150,7 @@ class Demo3(QDialog):
 
 
     def on_frameChange(self,n):
-        self._labPlay.setText(' {} 帧'.format(n))
+        self._labPlay.setText(' {} å¸§'.format(n))
         if n + 1 == self._movie.frameCount():
             self.btnNext.clicked.emit()
 
@@ -163,11 +163,11 @@ class Demo3(QDialog):
                 self._gifs.append(fullPath)
         
         self._spinBox.setMaximum(len(self._gifs))
-        self._label.setText('%03d条记录'%len(self._gifs))
+        self._label.setText('%03dæ�¡è®°å½•'%len(self._gifs))
         if len(self._gifs) > 0:
             self._movie.setFileName(self._gifs[0])
             self._movie.start()
-            self._labInfo.setText('{},{}帧\n{}'.format(
+            self._labInfo.setText('{},{}å¸§\n{}'.format(
                     os.path.split(self._movie.fileName())[1],self._movie.frameCount(),
                     self._movie.frameRect()
             ))
@@ -183,7 +183,7 @@ class Demo3(QDialog):
 
         self._spinBox.valueChanged.disconnect()
         self._spinBox.setValue(index)
-        self._labInfo.setText('{},{}帧\n{}'.format(
+        self._labInfo.setText('{},{}å¸§\n{}'.format(
                     os.path.split(self._movie.fileName())[1],self._movie.frameCount(),
                     self._movie.frameRect()
             ))
@@ -203,12 +203,113 @@ class Demo3(QDialog):
         self.flashMovie(self._picIndex)
     
 class Demo4(QDialog):
+    # stackl = QStackedLayout()
+    def __init__(self,parent = None):
+        QDialog.__init__(self,parent)
+        self.resize(400,600)
+        mainl = QGridLayout(self)
+        self.stackl = QStackedLayout()
+        self.stackl.setStackingMode(QStackedLayout.StackAll)
+
+        for i in range(10):
+            lab = QLabel(self)
+            lab.setText('%d_label' % (i+1))
+            lab.setMinimumSize(100,100)
+
+            lab.setAutoFillBackground(True)
+           
+            pt = lab.palette()
+            # pt = QPalette()
+            pt.setBrush(QPalette.Background,Qt.black)
+            pt.setBrush(QPalette.WindowText,Qt.white)
+            lab.setPalette(pt)
+            lab.setAlignment(Qt.AlignCenter)
+            self.stackl.addWidget(lab)
+            btn = QPushButton('item:%d'%(i+1))
+            mainl.addWidget(btn,i,0)
+            btn.clicked.connect(self.on_btnClick)
+
+        mainl.addLayout(self.stackl,0,1,self.stackl.count(),1)
+
+    def on_btnClick(self):
+        btn = QPushButton()
+        i = int(self.sender().text()[len('item:'):]) - 1
+        print('btn:' ,i)
+        self.stackl.setCurrentIndex(i)
+
+class Demo5(QDialog):
     
     def __init__(self,parent = None):
         QDialog.__init__(self,parent)
         self.resize(400,600)
-        # self.notexist()
-        aa = 2/0
+        mainl = QHBoxLayout(self)
+        self.stackl = QStackedLayout()
+        _listWgt = QListWidget(self)
+
+        for i in range(1000):
+            lab = QLabel(self)
+            lab.setText('%d_label' % (i+1))
+            lab.setMinimumSize(100,100)
+
+            lab.setAutoFillBackground(True)
+           
+            pt = lab.palette()
+            pt.setBrush(QPalette.Background,Qt.black)
+            pt.setBrush(QPalette.WindowText,Qt.white)
+            lab.setPalette(pt)
+            lab.setAlignment(Qt.AlignCenter)
+            self.stackl.addWidget(lab)
+            _listWgt.addItem("label:{}".format(i + 1))
+
+        mainl.addWidget(_listWgt,1);
+        mainl.addLayout(self.stackl,2)
+
+        _listWgt.currentRowChanged.connect(self.stackl.setCurrentIndex)
+
+class Demo6(QDialog):
+    def __init__(self,parent = None):
+        QDialog.__init__(self,parent)
+        self.setFixedSize(800,600)
+        mainl = QVBoxLayout(self)
+        
+        hL1 = QHBoxLayout()
+        self.lab1 = QLabel(self)
+        self.srcImg = QImage(r'C:\Users\xystar\Downloads\10bit.tif')
+        hL1.addWidget(self.lab1,1)
+        self.lab1.setScaledContents(True)
+        self.lab1.setAlignment(Qt.AlignCenter)
+        self.lab1.setPixmap(QPixmap.fromImage(self.srcImg).scaledToWidth(400))
+        
+        self.lab2 = QLabel(self)
+        self.lab2.setAlignment(Qt.AlignCenter)
+        self.lab1.setScaledContents(True)
+        pt = self.lab2.palette()
+        pt.setBrush(QPalette.Background,Qt.black)
+        pt.setBrush(QPalette.WindowText,Qt.white)
+        self.lab2.setPalette(pt)
+        hL1.addWidget(self.lab2,1)
+
+        hL2 = QHBoxLayout()
+        btn1 = QPushButton('转换')
+        btn1.clicked.connect(self.on_cvt)
+        hL2.addStretch()
+        hL2.addWidget(btn1)
+
+        mainl.addLayout(hL1,1)
+        mainl.addLayout(hL2)
+
+    def on_cvt(self):
+        print(self.srcImg.allGray(),self.srcImg.depth(),self.srcImg.width(),self.srcImg.height())
+        for i in range(self.srcImg.width()):
+            print(self.srcImg.pixel(100,i),qGray(self.srcImg.pixel(100,i)),end = ' ')
+        
+        # for i in range(self.srcImg.width()):
+        #     for j in range(self.srcImg.height()):
+        #         print(self.srcImg.pixelColor(i,j).value(),end = ' ')
+        #     print()
+        image = QImage(self.srcImg.width(),self.srcImg.height(),QImage.Format_RGB888)
+
+
 
 class myWidget(QWidget):
     def __init__(self,parent=None):
@@ -257,8 +358,8 @@ class mainWindow(QMainWindow):
         text = self.sender().text()
         print('whichSender:' + text)
         index = text[4:]
-        class_name = "Demo" + index #类名  
-        # module_name = "qtMain"   #模块名  
+        class_name = "Demo" + index #ç±»å��  
+        # module_name = "qtMain"   #æ¨¡å�—å��  
         # module = __import__(module_name) # import module  module
         module = sys.modules['__main__']
         print(module)

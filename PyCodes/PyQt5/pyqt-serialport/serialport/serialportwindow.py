@@ -88,10 +88,9 @@ class SerialPortWindow(QtWidgets.QMainWindow,serialportform.Ui_SerialPortWindow)
     def eventFilter(self,o,e):
         if o == self.textEditSent:
             if e.type() == QtCore.QEvent.KeyPress:
-                
+                print(e.key(),e.text())
                 if not self.checkBoxSendHex.isChecked() or e.key() > 0x10ffff:
                     return False
-                print(e.key(),e.text())
                 
                 if re.match('[0-9a-fA-F]',chr(e.key())):
                     if len(self.textEditSent.toPlainText()) % 3 == 2:
@@ -242,7 +241,8 @@ class SerialPortWindow(QtWidgets.QMainWindow,serialportform.Ui_SerialPortWindow)
             except:
                 self.textEditSent.clear()                
                 print(sys.exc_info()[0])
-        # self.textEditSent.setIsHex(self.checkBoxSendHex.isCheckable())
+        if hasattr(self.textEditSent,'setIsHex'):
+            self.textEditSent.setIsHex(self.checkBoxSendHex.isCheckable())
         
     def __send_data__(self):
         data = str(self.textEditSent.toPlainText())

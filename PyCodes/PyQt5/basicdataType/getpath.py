@@ -14,6 +14,7 @@ def findAllFiles():
             print ("the full name of the file is:" , os.path.join(parent,filename)) #输出文件路径信息
         break
 
+
 def curPath():
     print ("__file__=%s" % __file__)
     print ("os.path.realpath(__file__)=%s" % os.path.realpath(__file__))
@@ -30,13 +31,24 @@ def curPath():
 
 def curPath():
     fullPath = os.path.realpath(sys.argv[0])
+    print(os.curdir,os.sep,os.pardir)
+    print(os.defpath,os.devnull)
+    print(os.urandom(10))
+    print(__file__,sys.path[0])
     print(sys.argv[0],fullPath)
     filename = os.path.basename(fullPath)
     nameNoExt = os.path.splitext(filename)
     print(filename,nameNoExt)
 
+def findAllFilesQuick(path = '.'):
+    for entry in os.scandir(path):
+        if not entry.name.startswith('.') and entry.is_file():
+            print(entry.name)
+
+
 if __name__=="__main__":
     curPath()
+    findAllFilesQuick()
     print('findAllFiles:' + '-*-'*30)
     findAllFiles()
     

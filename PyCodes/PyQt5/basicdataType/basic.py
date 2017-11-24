@@ -1,8 +1,6 @@
 from queue import Queue
 from itertools import groupby
-import random
-
-
+import random,sys
 
 print('-*-'*20 + 'group by ----')
 def compress(l):
@@ -115,3 +113,10 @@ print (b)
 
 # print (dir(list))
 # print (help(list))
+
+try:
+    aa = 1/0
+    cc = dd
+except Exception as e:
+    print ('Error', e)
+    print('SysErr:',sys.exc_info(),sys.exc_info()[1])

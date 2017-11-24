@@ -17,6 +17,21 @@ def HexToByte( hexStr ):
     """
     return bytes.fromhex(hexStr)
 
+## 类似wireshark hexData 打印
+def hexdump(src,length = 16):
+    result = []
+    # digits = 4 if isinstance(src,unicode) else 2
+    digits = 4 if isinstance(src,str) else 2
+
+    for i in range(0,len(src),length):
+        s = src[i:i+length]
+        hexa = ' '.join(["%0*X" % (digits,ord(x)) for x in s])
+        text = ''.join([x if 0x20 <= ord(x) < 0x7e else b'.' for x in s])
+        result.append("%04x    %-*s    %s" %(i,length*(digits + 1),hexa,text))
+
+    print(('\n'.join(result)))
+
+hexdump('title:协议头1234567890hello abcdefghijklmnopqrstuvwxyz')
 
 hexStr2  = "FF FF FF 5F 81 21 07 0C 00 00 FF FF FF FF 5F 81 29 01 0B"
 # print(hexStr2[:])
