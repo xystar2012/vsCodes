@@ -84,5 +84,6 @@
         "regex": "cpp",
         "xcomplex": "cpp"
     },
-    "python.linting.pylintEnabled": false
+    "python.linting.pylintEnabled": false,
+    "python.pythonPath": "D:\\Program Files (x86)\\Python\\Python35-32\\python.exe"
 }

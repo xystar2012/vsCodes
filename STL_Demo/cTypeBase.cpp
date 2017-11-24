@@ -8,9 +8,7 @@
 #include <chrono>
 #include <iomanip>
 
-
 using std::chrono::milliseconds;
-
 
 struct csv_whitespace : std::ctype<wchar_t>
 {
@@ -111,10 +109,13 @@ static void millSec()
         printf("local: %s", asctime(localtime(&tb.time)));
         printf(".%03d\n",tb.millitm);
         std::this_thread::sleep_for(milliseconds(1000*1 + nLoop*10));
+        char mbstr[100];
+        if (std::strftime(mbstr, sizeof(mbstr), "%T ", std::localtime(&tb.time))) {
+            std::cout << mbstr << '\n';
+        }
+    
     }while(++nLoop < 10);
 }
-
-
 
 void static clockTest()
 {
@@ -144,8 +145,8 @@ void static clockTest()
 
 int main()
 {
-    clockTest();
-    // millSec();
+    // clockTest();
+    millSec();
     newLoacal();
     newSplit();
     localConstruct();

@@ -11,6 +11,7 @@
 #include <codecvt>
 #include <stdint.h>
 #include <type_traits>
+#include <assert.h>
 
 using namespace std;
 
@@ -157,10 +158,24 @@ static void mapDemo()
     });
 }
 
+#define DATA_SIZE(column,line,bits) ((column)*(line)*(bits)/8)
+#define FRAME_SIZE(column,line,bits) (((((column)*(line)*(bits)/8 + 128) >> 9) + 1) << 9)
+#define HEAD_SIZE(column,line,bits) ( FRAME_SIZE(column,line,bits)- DATA_SIZE(column,line,bits))
 
+
+void static getHeadSize()
+{
+    cout <<"Head:"  
+        << HEAD_SIZE(640,512,8) << " "
+        << HEAD_SIZE(1024,1024,8) << " "
+        << HEAD_SIZE(2048,2048,8)<< endl;
+
+    assert(true);  // 对错误表达式检测
+}
 
 int main()
 {
+    getHeadSize();
     // limit();
     isConvert();
     sizeofOper();
