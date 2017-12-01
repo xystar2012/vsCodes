@@ -1,4 +1,4 @@
-import re
+import re,sys
 import binascii  
 import struct
 from datetime  import datetime,timedelta,time
@@ -31,10 +31,21 @@ def hexdump(src,length = 16):
 
     print(('\n'.join(result)))
 
-hexdump('title:协议头1234567890hello abcdefghijklmnopqrstuvwxyz')
+# hexdump('title:协议头1234567890hello abcdefghijklmnopqrstuvwxyz')
+
+
+for codec in ['latin_1', 'utf_8', 'utf_16']:
+    print(codec, 'El Niño'.encode(codec), sep='\t')
+
+print(sys.stdout.encoding)
+for i in range(1,11):
+    for j in range(1,i):
+        sys.stdout.write(chr(219))
+        sys.stdout.write(chr(219))
+    print('')
 
 hexStr2  = "FF FF FF 5F 81 21 07 0C 00 00 FF FF FF FF 5F 81 29 01 0B"
-# print(hexStr2[:])
+print(hexStr2[:])
 data = bytes.fromhex(hexStr2)
 print(data)
 data2 = str(data)

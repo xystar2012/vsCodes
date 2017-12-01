@@ -7,10 +7,16 @@
 具体为：
   在命令“mysql_query(set names utf8)”外一律用大写“UTF-8”。
   
+// sstream strstream 
+istringstream 从文件或屏幕输入 
+ostringstream 输出到屏幕或文件
 
+  
+  
 //  mysql 1130  10061   my.cnf
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123123' WITH GRANT OPTION;  
 select * from douban_movie ORDER BY CONVERT(SUBSTR(`no` FROM 4),SIGNED)  
+  
   
   
 // bit

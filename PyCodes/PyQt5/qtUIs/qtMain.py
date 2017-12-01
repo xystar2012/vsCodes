@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from PyQt5 import QtGui,QtCore,QtWidgets
 from PyQt5.QtCore import QObject, pyqtSignal,QTimer,QThread,Qt,QEvent
 from PyQt5.QtGui import QImage,QPainter,QFont,QIcon,QPalette,QImage,QPixmap,QPalette,QMovie,qGray
@@ -7,6 +8,7 @@ from PyQt5.QtWidgets import QHBoxLayout,QVBoxLayout,QFormLayout,QStackedLayout,Q
 import os,os.path,sys,math
 import operator,copy
 import main_rc
+from PIL import Image
 
 class Demo1(QDialog):
     def __init__(self,parent = None):
@@ -38,6 +40,10 @@ class Demo1(QDialog):
         main_lay.addLayout(hLay)
         main_lay.addWidget(line)
         main_lay.addLayout(hlay2,1)
+        btn_tool.button(QtWidgets.QDialogButtonBox.Ok).clicked.connect(self.on_changeWindowType)
+
+    def on_changeWindowType(self):
+        pass
 
 class Demo2(QWidget):
     def __init__(self,parent = None):
@@ -95,11 +101,11 @@ class Demo3(QDialog):
         
         frmLay = QFormLayout()
         self._spinBox = QSpinBox()
-        frmLay.addRow('è·³è½¬:',self._spinBox)
+        frmLay.addRow('跳转:',self._spinBox)
         btnGo = QPushButton('Go',self)      
     
-        btnPrev = QPushButton('ä¸Šä¸€å¼ ',self)
-        self.btnNext = QPushButton('ä¸‹ä¸€å¼ ',self)
+        btnPrev = QPushButton('上一张',self)
+        self.btnNext = QPushButton('下一张',self)
         btnPrev.clicked.connect(self.on_prev)
         self.btnNext.clicked.connect(self.on_next)
         btnGo.clicked.connect(lambda: self.flashMovie(self._spinBox.value()))
@@ -116,20 +122,20 @@ class Demo3(QDialog):
         labLay.setSpacing(10)
         self._label = QLabel()
         frm1 = QFormLayout()
-        frm1.addRow('å…±:',self._label)
+        frm1.addRow('共:',self._label)
         frm1.setRowWrapPolicy(QFormLayout.WrapLongRows)
         labLay.addStretch()
         labLay.addLayout(frm1)
         frm1 = QFormLayout()
         self._labInfo = QLabel()
         # self._labInfo.setWordWrap(True)
-        frm1.addRow('å½“å‰�:',self._labInfo)
+        frm1.addRow('当前:',self._labInfo)
         # frm1.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
         frm1.setRowWrapPolicy(QFormLayout.WrapLongRows)
         labLay.addLayout(frm1)
         frm1 = QFormLayout()
         self._labPlay = QLabel()
-        frm1.addRow('æ’­æ”¾å¸§å�·:',self._labPlay)
+        frm1.addRow('播放帧号:',self._labPlay)
         labLay.addLayout(frm1)
         frm1.setRowWrapPolicy(QFormLayout.WrapLongRows)
 
@@ -150,7 +156,7 @@ class Demo3(QDialog):
 
 
     def on_frameChange(self,n):
-        self._labPlay.setText(' {} å¸§'.format(n))
+        self._labPlay.setText(' {} 帧'.format(n))
         if n + 1 == self._movie.frameCount():
             self.btnNext.clicked.emit()
 
@@ -163,11 +169,11 @@ class Demo3(QDialog):
                 self._gifs.append(fullPath)
         
         self._spinBox.setMaximum(len(self._gifs))
-        self._label.setText('%03dæ�¡è®°å½•'%len(self._gifs))
+        self._label.setText('%03d条记录'%len(self._gifs))
         if len(self._gifs) > 0:
             self._movie.setFileName(self._gifs[0])
             self._movie.start()
-            self._labInfo.setText('{},{}å¸§\n{}'.format(
+            self._labInfo.setText('{},{}帧\n{}'.format(
                     os.path.split(self._movie.fileName())[1],self._movie.frameCount(),
                     self._movie.frameRect()
             ))
@@ -183,7 +189,7 @@ class Demo3(QDialog):
 
         self._spinBox.valueChanged.disconnect()
         self._spinBox.setValue(index)
-        self._labInfo.setText('{},{}å¸§\n{}'.format(
+        self._labInfo.setText('{},{}帧\n{}'.format(
                     os.path.split(self._movie.fileName())[1],self._movie.frameCount(),
                     self._movie.frameRect()
             ))
@@ -269,47 +275,41 @@ class Demo5(QDialog):
 class Demo6(QDialog):
     def __init__(self,parent = None):
         QDialog.__init__(self,parent)
-        self.setFixedSize(800,600)
+        self.setWindowFlags(self.windowFlags()|Qt.WindowMinMaxButtonsHint)
+        self.setMinimumSize(800,600)
+        # self.resize(800,600)
         mainl = QVBoxLayout(self)
-        
         hL1 = QHBoxLayout()
         self.lab1 = QLabel(self)
-        self.srcImg = QImage(r'C:\Users\xystar\Downloads\10bit.tif')
+        self.imSrc = Image.open(r'C:\Users\xystar\Downloads\10bit.tif').convert('RGB')
+        self.srcImg = self.imSrc.toqpixmap()
         hL1.addWidget(self.lab1,1)
-        self.lab1.setScaledContents(True)
+        self.lab1.setScaledContents(True)  ## 窗口缩放时 图片会一起缩放
         self.lab1.setAlignment(Qt.AlignCenter)
-        self.lab1.setPixmap(QPixmap.fromImage(self.srcImg).scaledToWidth(400))
-        
+        # self.lab1.setPixmap(self.srcImg.scaledToWidth(400))
         self.lab2 = QLabel(self)
         self.lab2.setAlignment(Qt.AlignCenter)
-        self.lab1.setScaledContents(True)
+        self.lab2.setScaledContents(True)
         pt = self.lab2.palette()
         pt.setBrush(QPalette.Background,Qt.black)
         pt.setBrush(QPalette.WindowText,Qt.white)
         self.lab2.setPalette(pt)
         hL1.addWidget(self.lab2,1)
-
         hL2 = QHBoxLayout()
         btn1 = QPushButton('转换')
         btn1.clicked.connect(self.on_cvt)
         hL2.addStretch()
         hL2.addWidget(btn1)
-
         mainl.addLayout(hL1,1)
         mainl.addLayout(hL2)
+        QTimer.singleShot(10,lambda: self.lab1.setPixmap(self.srcImg.scaled(self.lab1.size())))
+        # QTimer.singleShot(0,lambda: self.lab1.setPixmap(self.srcImg))
 
     def on_cvt(self):
-        print(self.srcImg.allGray(),self.srcImg.depth(),self.srcImg.width(),self.srcImg.height())
-        for i in range(self.srcImg.width()):
-            print(self.srcImg.pixel(100,i),qGray(self.srcImg.pixel(100,i)),end = ' ')
+        self.lab2.setPixmap(QPixmap())
+        dst = self.imSrc.point(lambda i : i*0.25)
+        QTimer.singleShot(1000,lambda: self.lab2.setPixmap(dst.toqpixmap().scaled(self.lab2.size())))
         
-        # for i in range(self.srcImg.width()):
-        #     for j in range(self.srcImg.height()):
-        #         print(self.srcImg.pixelColor(i,j).value(),end = ' ')
-        #     print()
-        image = QImage(self.srcImg.width(),self.srcImg.height(),QImage.Format_RGB888)
-
-
 
 class myWidget(QWidget):
     def __init__(self,parent=None):
@@ -358,8 +358,8 @@ class mainWindow(QMainWindow):
         text = self.sender().text()
         print('whichSender:' + text)
         index = text[4:]
-        class_name = "Demo" + index #ç±»å��  
-        # module_name = "qtMain"   #æ¨¡å�—å��  
+        class_name = "Demo" + index #类名  
+        # module_name = "qtMain"   #模块名  
         # module = __import__(module_name) # import module  module
         module = sys.modules['__main__']
         print(module)
