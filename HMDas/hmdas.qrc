@@ -1,0 +1,47 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/1_1.png</file>
+        <file>image/1445087999_pauset.png</file>
+        <file>image/1445088015_start.png</file>
+        <file>image/Avance_rapide32.png</file>
+        <file>image/Avance-rapide.png</file>
+        <file>image/Bobine_video_64px.png</file>
+        <file>image/Bobine-video.png</file>
+        <file>image/camera.png</file>
+        <file>image/Camera_64px.png</file>
+        <file>image/Capture.png</file>
+        <file>image/Capture_64px.png</file>
+        <file>image/ccd.ico</file>
+        <file>image/ccdlist.ico</file>
+        <file>image/circle_blue.png</file>
+        <file>image/circle_green.png</file>
+        <file>image/circle_red.png</file>
+        <file>image/Delete.png</file>
+        <file>image/Delete_64px.png</file>
+        <file>image/disk_warning.png</file>
+        <file>image/Download.png</file>
+        <file>image/Download_64px.png</file>
+        <file>image/explist.ico</file>
+        <file>image/full_screen.png</file>
+        <file>image/Parametres.png</file>
+        <file>image/Parametres_64px.png</file>
+        <file>image/Pause.png</file>
+        <file>image/pause_64px.png</file>
+        <file>image/Play.png</file>
+        <file>image/Precedent.png</file>
+        <file>image/Precedent32.png</file>
+        <file>image/Recul-rapide.png</file>
+        <file>image/Recul-rapide32.png</file>
+        <file>image/replay_stop.png</file>
+        <file>image/replay_stop_64px.png</file>
+        <file>image/start_64px.png</file>
+        <file>image/stop_preview.png</file>
+        <file>image/stop_preview_64px.png</file>
+        <file>image/stop_record.png</file>
+        <file>image/stop_record_64px.png</file>
+        <file>image/Suivant.png</file>
+        <file>image/Suivant32.png</file>
+        <file>image/title.png</file>
+        <file>image/logo.png</file>
+    </qresource>
+</RCC>

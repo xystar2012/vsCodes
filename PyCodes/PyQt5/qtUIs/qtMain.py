@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
 from PyQt5 import QtGui,QtCore,QtWidgets
-from PyQt5.QtCore import QObject, pyqtSignal,QTimer,QThread,Qt,QEvent
+from PyQt5.QtCore import QObject, pyqtSignal,QTimer,QThread,Qt,QEvent,QSize
 from PyQt5.QtGui import QImage,QPainter,QFont,QIcon,QPalette,QImage,QPixmap,QPalette,QMovie,qGray
-from PyQt5.QtWidgets import QDialog,QWidget,QMainWindow,qApp,QFrame,QLabel,QPushButton,QSpinBox,QListWidget
-from PyQt5.QtWidgets import QHBoxLayout,QVBoxLayout,QFormLayout,QStackedLayout,QGridLayout
+from PyQt5.QtWidgets import QDialog,QWidget,QMainWindow,qApp,QFrame,QLabel,QPushButton,QSpinBox,QListWidget,QListView
+from PyQt5.QtWidgets import QHBoxLayout,QVBoxLayout,QFormLayout,QStackedLayout,QGridLayout,QSplitter,QListWidgetItem
 # from PyQt5.QtCore import qApp
 import os,os.path,sys,math
 import operator,copy
@@ -244,7 +244,6 @@ class Demo4(QDialog):
         self.stackl.setCurrentIndex(i)
 
 class Demo5(QDialog):
-    
     def __init__(self,parent = None):
         QDialog.__init__(self,parent)
         self.resize(400,600)
@@ -309,7 +308,91 @@ class Demo6(QDialog):
         self.lab2.setPixmap(QPixmap())
         dst = self.imSrc.point(lambda i : i*0.25)
         QTimer.singleShot(1000,lambda: self.lab2.setPixmap(dst.toqpixmap().scaled(self.lab2.size())))
+
+class Demo7(QDialog):
+    def __init__(self,parent = None):
+        QDialog.__init__(self,parent)
+        self.setWindowFlags(self.windowFlags()|Qt.WindowMinMaxButtonsHint)
+        self.resize(800,600)
+
+        class mySplitter(QSplitter):
+            def __init__(self,parent = None):
+                QSplitter.__init__(self,parent)
+
+            def eventFilter(self,o,e):
+                if o.objectName() == 'show':
+                    if e.type() == QEvent.MouseButtonDblClick:
+                        if o.isFullScreen():
+                            o.setParent(self)
+                            o.setWindowFlags(Qt.SubWindow)
+                            o.showNormal()
+                        else:
+                            o.setParent(self.parent())
+                            o.setWindowFlags(Qt.Window)
+                            o.showFullScreen()    
+                        return True
+                return False
+
+        mainl = QHBoxLayout(self)
+        splitter = mySplitter(self)
+        mainl.addWidget(splitter)
+        wgt2 = QWidget(splitter)
+        stackl = QStackedLayout()
+        _listWgt = QListWidget(splitter)
+        _listWgt.setViewMode(QListView.IconMode)
+        _listWgt.setIconSize(QSize(64, 64))
+        _listWgt.setMovement(QListView.Static)
+        _listWgt.setMaximumWidth(128)
+        _listWgt.setSpacing(12)
+        wgt2.setLayout(stackl)
+        splitter.addWidget(_listWgt)
+        splitter.addWidget(wgt2)
+
+        def setPtBlack(pt):
+            pt.setBrush(QPalette.Background,Qt.black)
+            pt.setBrush(QPalette.WindowText,Qt.white)
+
+            return pt
+
+        for i in range(10):
+            lab = QLabel(splitter)
+            lab.setText('%d_label' % (i+1))
+            lab.setMinimumSize(100,100)
+            lab.setAutoFillBackground(True)
+            pt = setPtBlack(lab.palette())
+            lab.setPalette(pt)
+            lab.setAlignment(Qt.AlignCenter)
+            stackl.addWidget(lab)
+            updateButton = QListWidgetItem(_listWgt)
+
+            img = "image/stop_record_64px.png" if i%2  else "image/Capture_64px.png"
+            updateButton.setIcon(QIcon(img))
+            updateButton.setText("label:{}".format(i + 1))
+            updateButton.setTextAlignment(Qt.AlignHCenter)
+            updateButton.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+
+        _listWgt.currentRowChanged.connect(stackl.setCurrentIndex) 
+
+        wgtShow = QWidget(splitter)
+        splitter.addWidget(wgtShow)
+        hLay = QHBoxLayout(wgtShow)
+        hLay.setSpacing(1)
+        hLay.setContentsMargins(1,0,1,0)
+
+        for i in range(4):
+            wgt3 = QWidget(wgtShow)
+            wgt3.setObjectName('show')
+            wgt3.setAutoFillBackground(True)
+            pt = setPtBlack(wgt3.palette())
+            wgt3.setPalette(pt)
+            wgt3.setMinimumWidth(100)
+            wgt3.installEventFilter(splitter)
+            hLay.addWidget(wgt3)
         
+        # splitter.setStretchFactor(0,1)
+        splitter.setChildrenCollapsible(False)
+        print(splitter.sizes(),splitter.count())
+            
 
 class myWidget(QWidget):
     def __init__(self,parent=None):
@@ -319,7 +402,6 @@ class myWidget(QWidget):
         pa = QPalette(Qt.black)
         self.setPalette(pa)
         
-
     def mouseDoubleClickEvent(self,event):
         if self.isFullScreen():
             self.setWindowFlags(Qt.SubWindow)

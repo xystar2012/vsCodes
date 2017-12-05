@@ -57,19 +57,31 @@ class cfgPage(QTabWidget):
         gridLayout.setColumnMinimumWidth(1, 80)
         gridLayout.addWidget(labCam, 0, 1)
 
-        nDisk = 64
-        nCCd = 25
+        def getLine():
+            line = QFrame(self)
+            line.setFrameShape(QFrame.HLine)
+            line.setFrameShadow(QFrame.Sunken)
+            return line
+
+        nDisk = 100
+        nCCd = 50
         for i in range(0,nDisk):
             diskN = QLabel('磁盘%d\n(%dGB)'% (i,i*100 + 500))
             diskN.setWordWrap(True)
+            # 第二列开始
             gridLayout.addWidget(diskN, 0, 2 + i)
+            line = getLine()
+            # 第二行 从第二列合并
+            gridLayout.addWidget(line, 1, 2,1,nDisk,Qt.AlignVCenter)
+        
         labDevNam = QLabel('设备->abcdefg')
         labDevNam.setWordWrap(True)
-        gridLayout.addWidget(labDevNam, 1, 0,nCCd,0,Qt.AlignVCenter)
+        ## 第一列  从第第三行合并
+        gridLayout.addWidget(labDevNam, 2, 0,nCCd,0,Qt.AlignVCenter)
 
         for i in range(0,nCCd):
             labCCDNam = QLabel('CCD:%d'%(i+100))
-            gridLayout.addWidget(labCCDNam,i+1,1)   #  第一列
+            gridLayout.addWidget(labCCDNam,i + 2,1)   #  第一列
 
         for i in range(0,nDisk):
             btnGroup = QButtonGroup(self)
@@ -79,13 +91,13 @@ class cfgPage(QTabWidget):
             for j in range(0,nCCd):
                 diskN = QCheckBox(str(i))
                 diskN.setCheckable(True)
-                gridLayout.addWidget(diskN,j + 1, i + 2)
+                gridLayout.addWidget(diskN,j + 2, i + 2)
                 btnGroup.addButton(diskN,j)
             # self._btns.append(btnGroup)
-        line = QFrame(self)
-        line.setFrameShape(QFrame.HLine)
-        line.setFrameShadow(QFrame.Sunken)
-        gridLayout.addWidget(line,gridLayout.rowCount(),0,gridLayout.columnCount(),0,Qt.AlignBottom)
+        line = getLine()
+        # line.setFrameShape(QFrame.HLine)
+        # line.setFrameShadow(QFrame.Sunken)
+        gridLayout.addWidget(line,gridLayout.rowCount(),0,1,gridLayout.columnCount(),Qt.AlignTop)
 
     def page2(self,page):
         _vLayout = QVBoxLayout(page)

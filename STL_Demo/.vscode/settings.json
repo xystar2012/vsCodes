@@ -82,7 +82,9 @@
         "xtr1common": "cpp",
         "xutility": "cpp",
         "regex": "cpp",
-        "xcomplex": "cpp"
+        "xcomplex": "cpp",
+        "forward_list": "cpp",
+        "random": "cpp"
     },
     "python.linting.pylintEnabled": false,
     "python.pythonPath": "D:\\Program Files (x86)\\Python\\Python35-32\\python.exe"

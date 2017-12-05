@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include <type_traits>
 #include <assert.h>
+#include <stdint.h>
+#include <limits>
 
 using namespace std;
 
@@ -169,6 +171,12 @@ void static getHeadSize()
         << HEAD_SIZE(640,512,8) << " "
         << HEAD_SIZE(1024,1024,8) << " "
         << HEAD_SIZE(2048,2048,8)<< endl;
+
+    uint64_t aa = ((std::numeric_limits<uint64_t>::max)() - 1)*2;
+    cout << hex << "before aa:" << aa << endl;
+    aa += 2;
+    cout << hex << "after aa:" << aa << endl;
+    cout << hex << "after aa:" << (std::numeric_limits<uint64_t>::max)() -  aa << endl;
 
     assert(true);  // 对错误表达式检测
 }
